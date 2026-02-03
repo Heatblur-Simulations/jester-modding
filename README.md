@@ -38,3 +38,5 @@ its way into the module, just open a
 [Pull Request](https://github.com/Heatblur-Simulations/jester-modding/pulls)! 🎉
 
 Before you get started, kindly familiarize yourself with the [Contribution Guidelines](CONTRIBUTING.md).
+
+This is a test contribution
