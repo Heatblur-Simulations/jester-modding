@@ -1,0 +1,333 @@
+/* ══════════════════════════════════════════════════════════════
+   Grease Pencil Enhanced — Jester 2.0 Dark-Mode Theme
+   Colors sourced from F-4E JesterWheel renderer.js (night mode)
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Jester Night-Mode Palette ─────────────────────────────── */
+:root {
+    --jester-bg:          #301D20;   /* menu ring background            */
+    --jester-bg-deep:     #1B090B;   /* number ring / deep background   */
+    --jester-bg-outer:    #29151A;   /* outer ring background           */
+    --jester-border:      #695457;   /* outer border ring               */
+    --jester-accent:      #a50a45;   /* selected outer (magenta)        */
+    --jester-accent2:     #641194;   /* selected inner (purple)         */
+    --jester-text:        #b3b3b3;   /* primary text                    */
+    --jester-text-dim:    #898989;   /* description / secondary text    */
+    --jester-text-bright: #d4d4d4;   /* bright text                     */
+    --jester-hover:       #4a2a30;   /* hover state                     */
+    --jester-active-bg:   #5a1030;   /* active button background        */
+    --jester-danger:      #e17f7f;   /* bandit red (warnings)           */
+    --jester-border-soft: #4a3538;   /* subtle internal borders         */
+    --btn-bg:             #000000;   /* button background (black)       */
+    --btn-text:           #f5c842;   /* button text (yellow)            */
+    --btn-hover-bg:       #1a1a1a;   /* button hover background         */
+}
+
+/* ── Base ─────────────────────────────────────────────────── */
+body {
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 9px;
+    color: var(--jester-text);
+}
+
+/* ── dat.GUI embedded in our panel ────────────────────────── */
+#datGuiColorContainer {
+    margin-bottom: 4px;
+}
+#datGuiColorContainer .dg {
+    margin: 0 !important;
+}
+#datGuiColorContainer .dg.main {
+    width: 100% !important;
+}
+#datGuiColorContainer .dg .c {
+    width: 100% !important;
+}
+#datGuiColorContainer .dg .cr {
+    border-left: 3px solid var(--jester-accent) !important;
+}
+#datGuiColorContainer .dg .close-button {
+    display: none !important;
+}
+#datGuiColorContainer .dg li.title {
+    display: none !important;
+}
+
+/* ── PIXI canvas (appended by JS to body) ─────────────────── */
+body > canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+/* ── Control Panel (floats above canvas) ──────────────────── */
+#controlPanel {
+    position: absolute;
+    top: 20px;
+    right: 12px;
+    width: 172px;
+    z-index: 100;
+    max-height: calc(100vh - 35px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: var(--jester-border) transparent;
+    pointer-events: auto;
+}
+
+#controlPanel::-webkit-scrollbar         { width: 4px; }
+#controlPanel::-webkit-scrollbar-track   { background: transparent; }
+#controlPanel::-webkit-scrollbar-thumb   { background: var(--jester-border); border-radius: 3px; }
+
+/* ── Sections ─────────────────────────────────────────────── */
+.panel-section {
+    background: rgba(0, 0, 0, 0.65);
+    border: 1px solid #695457;
+    border-radius: 3px;
+    margin-bottom: 4px;
+    padding: 6px 8px 8px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+}
+
+.section-title {
+    color: var(--btn-text);
+    font-weight: bold;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding-bottom: 3px;
+    margin-bottom: 4px;
+    border-bottom: 1px solid #4a353888;
+    user-select: none;
+    cursor: pointer;
+    position: relative;
+}
+
+.section-title::after {
+    content: '\25BC';
+    position: absolute;
+    right: 0;
+    font-size: 7px;
+    color: var(--btn-text);
+    transition: transform 0.2s;
+}
+
+.panel-section.collapsed .section-title::after {
+    transform: rotate(-90deg);
+}
+
+.panel-section.collapsed .section-title {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.panel-section.collapsed > *:not(.section-title) {
+    display: none !important;
+}
+
+/* ── Tool buttons (Brush / Eraser / Shapes) ───────────────── */
+.tool-row {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 2px;
+}
+
+.tool-btn,
+.action-btn {
+    flex: 1;
+    background: var(--btn-bg);
+    color: var(--btn-text);
+    border: 1px solid var(--jester-border-soft);
+    border-radius: 2px;
+    padding: 3px 1px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 9px;
+    text-align: center;
+    user-select: none;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+/* Shape dropdown (custom div-based) */
+.shape-dropdown-wrap {
+    position: relative;
+    width: 100%;
+}
+.shape-dropdown-toggle {
+    width: 100%;
+    background: var(--btn-bg);
+    color: var(--btn-text);
+    border: 1px solid var(--jester-border-soft);
+    border-radius: 2px;
+    padding: 3px 4px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 9px;
+    text-align: center;
+    box-sizing: border-box;
+    user-select: none;
+    -webkit-user-select: none;
+}
+.shape-dropdown-toggle:hover {
+    background: var(--btn-hover-bg);
+    border-color: var(--jester-border);
+}
+.shape-dropdown-toggle.active {
+    border-color: var(--jester-accent);
+}
+.shape-dropdown-menu {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    background: #1B090B;
+    border: 1px solid var(--jester-border);
+    border-radius: 2px;
+    z-index: 100;
+    margin-top: 1px;
+    max-height: 180px;
+    overflow-y: auto;
+}
+.shape-dropdown-item {
+    padding: 3px 6px;
+    font-size: 9px;
+    color: var(--btn-text);
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+}
+.shape-dropdown-item:hover {
+    background: var(--btn-hover-bg);
+}
+.shape-dropdown-item.selected {
+    background: var(--jester-accent);
+    color: #fff;
+}
+
+.tool-btn:hover,
+.action-btn:hover {
+    background: var(--btn-hover-bg);
+    border-color: var(--jester-border);
+    color: #ffe566;
+}
+
+.tool-btn.active {
+    background: var(--jester-active-bg);
+    border-color: var(--jester-accent);
+    color: #fff;
+}
+
+.action-btn.active {
+    background: var(--jester-active-bg);
+    border-color: var(--jester-accent);
+    color: #fff;
+}
+
+/* ── Image Button List ─────────────────────────────────────── */
+.image-button-list {
+    max-height: 110px;
+    overflow-y: auto;
+    margin-bottom: 4px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--jester-border) transparent;
+}
+
+.image-button-list::-webkit-scrollbar { width: 4px; }
+.image-button-list::-webkit-scrollbar-track { background: transparent; }
+.image-button-list::-webkit-scrollbar-thumb { background: var(--jester-border); border-radius: 3px; }
+
+.image-select-btn {
+    display: block;
+    width: 100%;
+    background: var(--btn-bg);
+    color: var(--btn-text);
+    border: 1px solid var(--jester-border-soft);
+    border-radius: 2px;
+    padding: 2px 4px;
+    margin-bottom: 1px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 8px;
+    text-align: left;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.image-select-btn:hover {
+    background: var(--btn-hover-bg);
+    border-color: var(--jester-accent);
+    color: #ffe566;
+}
+
+.action-btn.warn {
+    color: var(--jester-danger);
+}
+.action-btn.warn:hover {
+    background: #3a1515;
+    border-color: var(--jester-danger);
+}
+
+/* ── Labels & Inputs ──────────────────────────────────────── */
+.ctrl-label {
+    display: block;
+    margin-bottom: 3px;
+    color: #b3b3b3;
+    font-size: 9px;
+    user-select: none;
+}
+
+.ctrl-label span {
+    float: right;
+    color: var(--btn-text);
+    min-width: 22px;
+    text-align: right;
+}
+
+/* Range sliders */
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 4px;
+    background: #1B090B;
+    border: 1px solid #4a3538;
+    border-radius: 2px;
+    outline: none;
+    margin-top: 1px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--btn-text);
+    cursor: pointer;
+    border: 1px solid #695457;
+}
+input[type="range"]::-moz-range-thumb {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--btn-text);
+    border: 1px solid #695457;
+    cursor: pointer;
+}
+
+/* Checkbox label row */
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.checkbox-label input[type="checkbox"] {
+    accent-color: var(--jester-accent);
+    margin: 0;
+}

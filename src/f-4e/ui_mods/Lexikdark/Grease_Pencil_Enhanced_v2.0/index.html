@@ -1,0 +1,147 @@
+<!--
+  ~ Grease Pencil Mod - Enhanced
+  ~ Based on Heatblur F-4E Grease Pencil
+  -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Grease Pencil UI</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&display=swap">
+    <link rel="stylesheet" type="text/css" href="css/styles.css"/>
+    <script src="js/pixi-legacy.min.js"></script>
+    <script src="js/dat.gui.min.js"></script>
+    <script src="js/interface.js"></script>
+    <script src="js/SpritePool.js"></script>
+    <script src="js/BrushGenerator.js"></script>
+</head>
+<body>
+
+    <!-- ═══ Control Panel (right of canvas, shown via showGui) ═══ -->
+    <div id="controlPanel">
+
+        <!-- ── Tools ── -->
+        <div class="panel-section">
+            <div class="section-title">Tools</div>
+            <div class="tool-row">
+                <button class="tool-btn active" id="btnBrush"     data-tool="Brush">Brush</button>
+                <button class="tool-btn"        id="btnEraser"    data-tool="Eraser">Eraser</button>
+            </div>
+            <div class="tool-row">
+                <div class="shape-dropdown-wrap" id="shapeDropdownWrap">
+                    <div class="shape-dropdown-toggle" id="shapeDropdownToggle">Shapes ▾</div>
+                    <div class="shape-dropdown-menu" id="shapeDropdownMenu" style="display:none;">
+                        <div class="shape-dropdown-item" data-shape="Line">╱ Line</div>
+                        <div class="shape-dropdown-item" data-shape="Circle">○ Circle</div>
+                        <div class="shape-dropdown-item" data-shape="Rectangle">□ Rectangle</div>
+                        <div class="shape-dropdown-item" data-shape="Bubble">💬 Bubble</div>
+                        <div class="shape-dropdown-item" data-shape="Crosshair">✛ Crosshair</div>
+                        <div class="shape-dropdown-item" data-shape="Circleplus">⊕ Circle-Plus</div>
+                        <div class="shape-dropdown-item" data-shape="Bullseye">◎ Bullseye</div>
+                        <div class="shape-dropdown-item" data-shape="CircleCross">⊗ Circle-Cross</div>
+                    </div>
+                </div>
+            </div>
+            <div class="tool-row">
+                <button class="tool-btn" id="btnText" data-tool="Text">Text</button>
+            </div>
+            <div class="tool-row" id="textControls" style="display:none;">
+                <button class="action-btn" id="btnCommitText">Place Text</button>
+                <button class="action-btn" id="btnCancelText">Cancel</button>
+            </div>
+            <div id="textRotationControl" style="display:none;">
+                <label class="ctrl-label">Text Rotation <span id="textRotationVal">0</span>&deg;
+                    <input type="range" id="textRotation" min="-180" max="180" value="0" step="1"/>
+                </label>
+            </div>
+        </div>
+
+        <!-- ── Brush Settings ── -->
+        <div class="panel-section">
+            <div class="section-title">Brush Settings</div>
+
+            <label class="ctrl-label">Color (click swatch below)</label>
+            <div id="datGuiColorContainer"></div>
+
+            <label class="ctrl-label">Brush Size <span id="brushSizeVal">10</span>
+                <input type="range" id="brushSize" min="1" max="100" value="10"/>
+            </label>
+
+            <label class="ctrl-label">Eraser Size <span id="eraserSizeVal">30</span>
+                <input type="range" id="eraserSize" min="1" max="200" value="30"/>
+            </label>
+
+            <label class="ctrl-label checkbox-label">
+                <input type="checkbox" id="fillShapes"/>
+                Fill Shapes
+            </label>
+        </div>
+
+        <!-- ── Layers ── -->
+        <div class="panel-section">
+            <div class="section-title">Layers</div>
+
+            <div class="tool-row">
+                <button class="tool-btn active" id="btnLayer1" data-layer="0">Layer 1</button>
+                <button class="tool-btn" id="btnLayer2" data-layer="1">Layer 2</button>
+            </div>
+
+            <div class="tool-row">
+                <button class="action-btn" id="btnToggleL1">L1 Visible</button>
+                <button class="action-btn" id="btnToggleL2">L2 Visible</button>
+            </div>
+        </div>
+
+        <!-- ── Actions ── -->
+        <div class="panel-section">
+            <div class="section-title">Actions</div>
+            <div class="tool-row">
+                <button class="action-btn" id="btnUndo">Undo</button>
+                <button class="action-btn" id="btnRedo">Redo</button>
+            </div>
+            <div class="tool-row">
+                <button class="action-btn" id="btnClearLayer">Clear Layer</button>
+                <button class="action-btn warn" id="btnClearAll">Clear All</button>
+            </div>
+
+        </div>
+
+        <!-- ── Image Placement ── -->
+        <div class="panel-section">
+            <div class="section-title">Image Placement</div>
+
+            <label class="ctrl-label">Size <span id="imgSizeVal">300</span>
+                <input type="range" id="imgSize" min="50" max="1000" value="300" step="1"/>
+            </label>
+
+            <label class="ctrl-label">Opacity <span id="imgOpacityVal">1.00</span>
+                <input type="range" id="imgOpacity" min="0" max="1" value="1" step="0.01"/>
+            </label>
+
+            <label class="ctrl-label">Rotation <span id="imgRotationVal">0</span>&deg;
+                <input type="range" id="imgRotation" min="-180" max="180" value="0" step="1"/>
+            </label>
+
+            <div class="tool-row">
+                <button class="action-btn" id="btnPaintToCanvas">Paint to Canvas</button>
+            </div>
+            <div class="tool-row">
+                <button class="action-btn" id="btnImportImage">Import Image&hellip;</button>
+            </div>
+        </div>
+
+        <!-- ── Preset Images ── -->
+        <div class="panel-section">
+            <div class="section-title">Preset Images</div>
+            <div id="imageButtonContainer" class="image-button-list"></div>
+            <div class="tool-row">
+                <button class="action-btn" id="btnRemoveImage">Remove Image</button>
+            </div>
+        </div>
+
+    </div><!-- /controlPanel -->
+
+    <script src="js/App.js"></script>
+</body>
+</html>
