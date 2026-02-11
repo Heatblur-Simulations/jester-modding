@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>F-4E Grease Pencil Enhanced - Documentation</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&display=swap">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            line-height: 1.6;
+            color: #d4d4d4;
+            background: #2b2b2b;
+        }
+        h1 { color: #f5c842; border-bottom: 3px solid #f5c842; padding-bottom: 10px; }
+        h2 { color: #e0b83a; margin-top: 40px; border-bottom: 1px solid #555; padding-bottom: 5px; }
+        h3 { color: #ccc; margin-top: 25px; }
+        a { color: #6db3f2; }
+        a:visited { color: #a48cd2; }
+        strong { color: #e0e0e0; }
+        code { 
+            background: #1e3a5f; 
+            color: #ffffff;
+            padding: 3px 8px; 
+            border-radius: 3px; 
+            font-family: Consolas, monospace;
+            font-weight: 500;
+        }
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 13px;
+        }
+        .feature-box {
+            background: #1e2d3d;
+            border-left: 4px solid #4a9ede;
+            padding: 15px;
+            margin: 15px 0;
+            color: #d4d4d4;
+        }
+        .warning-box {
+            background: #3d2e1e;
+            border-left: 4px solid #ff9800;
+            padding: 15px;
+            margin: 15px 0;
+            color: #d4d4d4;
+        }
+        .tip-box {
+            background: #1e3d22;
+            border-left: 4px solid #4caf50;
+            padding: 15px;
+            margin: 15px 0;
+            color: #d4d4d4;
+        }
+        .new-badge {
+            display: inline-block;
+            background: #e91e63;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 3px;
+            vertical-align: middle;
+            margin-left: 6px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #555;
+            padding: 10px;
+            text-align: left;
+        }
+        th { background: #383838; color: #e0b83a; }
+        .file-tree {
+            background: #333;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+        }
+        .file-tree div { margin-left: 20px; }
+
+        /* Visual example boxes */
+        .visual-example {
+            background: #111111;
+            border: 2px solid #695457;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .visual-example .caption {
+            color: #f5c842;
+            font-family: Consolas, monospace;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+        .visual-example svg { max-width: 100%; }
+
+        /* Keyboard mockup */
+        .kb-mockup {
+            display: inline-block;
+            background: #000;
+            color: #f5c842;
+            border: 1px solid #695457;
+            border-radius: 3px;
+            padding: 2px 6px;
+            margin: 1px;
+            font-family: Consolas, monospace;
+            font-size: 11px;
+            min-width: 22px;
+            text-align: center;
+        }
+        .kb-special {
+            background: #000;
+            color: #f5c842;
+        }
+        .kb-row { text-align: center; margin: 2px 0; }
+
+        /* Panel mockup */
+        .panel-mockup {
+            background: #111;
+            border: 1px solid #695457;
+            border-radius: 4px;
+            padding: 8px;
+            max-width: 200px;
+            margin: 10px auto;
+            text-align: left;
+        }
+        .panel-mockup .pm-title {
+            color: #f5c842;
+            font-family: Consolas, monospace;
+            font-size: 11px;
+            font-weight: bold;
+            border-bottom: 1px solid #69545733;
+            padding-bottom: 4px;
+            margin-bottom: 6px;
+            cursor: pointer;
+        }
+        .panel-mockup .pm-btn {
+            display: inline-block;
+            background: #000;
+            color: #f5c842;
+            border: 1px solid #695457;
+            border-radius: 3px;
+            padding: 3px 8px;
+            margin: 2px;
+            font-family: Consolas, monospace;
+            font-size: 10px;
+        }
+        .panel-mockup .pm-btn.active {
+            background: #f5c842;
+            color: #000;
+        }
+
+        @media print {
+            body { background: white; color: #333; }
+            h1, h2, h3 { color: #333; }
+            .no-print { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<h1> F-4E Grease Pencil Enhanced 2.0</h1>
+<p><strong>Version:</strong> Enhanced 2.0<br>
+<strong>Base:</strong> Heatblur F-4E Grease Pencil<br>
+<strong>Author:</strong> Modded by Community Modder Lexik"ROBOT"Dark</p>
+
+<div class="tip-box">
+    <strong>📄 To save as PDF:</strong> Open this file in your browser, press <code>Ctrl+P</code>, and select "Save as PDF" as the printer.
+</div>
+
+<h2>📋 Table of Contents</h2>
+<ol>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#installation">Installation</a></li>
+    <li><a href="#file-structure">File Structure</a></li>
+    <li><a href="#features">Features &amp; Functions</a></li>
+    <li><a href="#visual-examples">Visual Examples</a></li>
+    <li><a href="#how-it-works">How It Works (Technical)</a></li>
+    <li><a href="#updating-images">Updating the Image List</a></li>
+    <li><a href="#troubleshooting">Troubleshooting</a></li>
+</ol>
+
+<!-- ════════════════════════════════════════════════ -->
+<h2 id="overview">1. Overview</h2>
+<p>The Grease Pencil Enhanced mod extends the original Heatblur F-4E canopy grease pencil feature with additional drawing tools, layers, image stamps, and automatic persistence.</p>
+
+<div class="feature-box">
+    <strong>All Features:</strong>
+    <ul>
+        <li>Jester 2.0 dark-mode UI theme with see-through black panels</li>
+        <li>75% compact UI scaling</li>
+        <li>Shape tools dropdown (Line, Circle, Rectangle, Bubble, Crosshair, Circle-Plus, Bullseye, Circle-Cross)</li>
+        <li>Text tool with on-screen virtual keyboard</li>
+        <li>Text cursor with ◀ ▶ arrow keys for mid-text editing</li>
+        <li>Button press highlight flash on keyboard</li>
+        <li>Resizable keyboard box (drag corner grip)</li>
+        <li>Text color picker (dat.GUI) in keyboard overlay</li>
+        <li>Draggable &amp; movable keyboard overlay</li>
+        <li>Symbol keyboard with 2 pages (punctuation + tactical symbols)</li>
+        <li>Coordinate symbols (° ′ ″) for DMS notation</li>
+        <li>Tactical symbols (✛ ⊕ ◎ ⊗ ⊘ ≈ ± ∆ ∇ ←→↑↓)</li>
+        <li>Numpad for quick number entry</li>
+        <li>Sharper text rendering (2x resolution)</li>
+        <li>Handwritten Caveat font for text</li>
+        <li>Text drag positioning and rotation</li>
+        <li>2-layer system for organizing drawings</li>
+        <li>Undo/Redo support (up to 30 steps)</li>
+        <li>Automatic drawing persistence across sessions</li>
+        <li>Preset image stamps from the Images folder</li>
+        <li>Custom image import</li>
+        <li>Full color picker (using dat.GUI)</li>
+        <li>Adjustable brush and eraser sizes</li>
+        <li>Image size, opacity, and rotation controls</li>
+        <li>Collapsible UI panels (click section titles)</li>
+        <li>Rounded line caps and rectangle corners</li>
+    </ul>
+</div>
+
+<!-- ════════════════════════════════════════════════ -->
+<h2 id="installation">2. Installation</h2>
+<h3>Option A — Manual Installation</h3>
+<ol>
+    <li>Locate your DCS F-4E installation:
+        <pre>D:\Eagle Dynamics\DCS World\Mods\aircraft\F-4E\UI\GreasePencil\</pre>
+    </li>
+    <li>Backup the original files (optional but recommended)</li>
+    <li>Copy all mod files to replace the originals</li>
+    <li>Add any custom images to the <code>Images/</code> folder</li>
+    <li>Run <code>UpdateImages.bat</code> to update the image list</li>
+</ol>
+
+<h3>Option B — Mod Manager</h3>
+<p>Installation can also be done using a Mod Manager such as
+<strong>OVGME</strong> or <strong>DCS Mod Manager</strong>.
+Simply add the mod package to your manager and enable it — the manager
+will place the files in the correct location automatically.</p>
+
+<!-- ════════════════════════════════════════════════ -->
+<h2 id="file-structure">3. File Structure</h2>
+<div class="file-tree">
+    <strong>GreasePencil/</strong>
+    <div>├── <strong>index.html</strong> — Main UI layout and controls</div>
+    <div>├── <strong>UpdateImages.bat</strong> — Double-click to update image list</div>
+    <div>├── <strong>UpdateImages.ps1</strong> — PowerShell script (called by .bat)</div>
+    <div>├── <strong>Documentation.html</strong> — This documentation file</div>
+    <div>├── <strong>css/</strong></div>
+    <div>│   └── styles.css — All UI styling</div>
+    <div>├── <strong>js/</strong></div>
+    <div>│   ├── App.js — Main application logic (enhanced)</div>
+    <div>│   ├── dat.gui.min.js — Color picker library</div>
+    <div>│   ├── interface.js — Heatblur game integration</div>
+    <div>│   ├── pixi-legacy.min.js — PIXI.js rendering engine</div>
+    <div>│   ├── SpritePool.js — Sprite pooling for performance</div>
+    <div>│   └── BrushGenerator.js — Brush texture generation</div>
+    <div>├── <strong>Images/</strong></div>
+    <div>│   ├── Images.json — Auto-generated image list</div>
+    <div>│   └── *.png, *.jpg — Your preset images</div>
+</div>
+
+<!-- ════════════════════════════════════════════════ -->
+<h2 id="features">4. Features &amp; Functions</h2>
+
+<h3>4.1 Drawing Tools</h3>
+<table>
+    <tr><th>Tool</th><th>Icon</th><th>Description</th><th>Usage</th></tr>
+    <tr><td><strong>Brush</strong></td><td>—</td><td>Freehand drawing tool</td><td>Click and drag to draw</td></tr>
+    <tr><td><strong>Eraser</strong></td><td>—</td><td>Erase drawings</td><td>Click and drag to erase. Middle-click also activates eraser.</td></tr>
+    <tr><td><strong>Text</strong></td><td>Text</td><td>Add text via on-screen keyboard</td><td>Click canvas, use virtual keyboard, click Add Text</td></tr>
+</table>
+
+<h3>4.1.1 Shapes Dropdown</h3>
+<p>Shape tools are accessed via a custom dropdown menu (built with div elements for DCS browser compatibility). Click the <strong>Shapes ▾</strong> dropdown to reveal all available shapes:</p>
+<table>
+    <tr><th>Shape</th><th>Icon</th><th>Description</th><th>Usage</th></tr>
+    <tr><td><strong>Line</strong></td><td>╱</td><td>Draw straight lines with rounded ends</td><td>Click start point, drag to end point, release</td></tr>
+    <tr><td><strong>Circle</strong></td><td>○</td><td>Draw circles</td><td>Click center, drag to set radius, release</td></tr>
+    <tr><td><strong>Rectangle</strong></td><td>□</td><td>Draw rounded rectangles</td><td>Click corner, drag to opposite corner, release</td></tr>
+    <tr><td><strong>Bubble</strong></td><td>💬</td><td>Draw speech bubbles (oval with tail)</td><td>Click corner, drag to size, release</td></tr>
+    <tr><td><strong>Crosshair</strong></td><td>✛</td><td>Draw a + crosshair marker</td><td>Click center, drag to set size, release</td></tr>
+    <tr><td><strong>Circle-Plus</strong></td><td>⊕</td><td>Circle with crosshair inside</td><td>Click center, drag to set radius, release</td></tr>
+    <tr><td><strong>Bullseye</strong></td><td>◎</td><td>Three concentric circles</td><td>Click center, drag to set outer radius, release</td></tr>
+    <tr><td><strong>Circle-Cross</strong></td><td>⊗</td><td>Circle with X inside</td><td>Click center, drag to set radius, release</td></tr>
+</table>
+
+<div class="tip-box">
+    <strong>💡 DCS Note:</strong> The shapes dropdown uses a custom div-based menu instead of a native <code>&lt;select&gt;</code> element, because DCS's embedded browser does not properly support native dropdown popups.
+</div>
+
+<h3>4.2 Text Tool &amp; Virtual Keyboard</h3>
+<p>Because DCS captures keyboard input at the OS level, the text tool uses an <strong>on-screen virtual keyboard</strong> that works entirely with mouse clicks.</p>
+
+<h4>How to use:</h4>
+<ol>
+    <li>Select the <strong>Text</strong> tool button</li>
+    <li>Click anywhere on the canvas — the virtual keyboard opens</li>
+    <li>Click letter/number/symbol keys to compose your text</li>
+    <li>The text preview appears at the top of the keyboard panel</li>
+    <li>Click <strong>Add Text</strong> to place the text on the canvas</li>
+    <li>Drag the placed text to reposition it</li>
+    <li>Use <strong>Brush Size</strong> slider to change font size</li>
+    <li>Use <strong>Text Rotation</strong> slider to rotate</li>
+    <li>Click <strong>Place Text</strong> to commit permanently, or <strong>Cancel</strong> to remove</li>
+</ol>
+
+<h4>Keyboard features:</h4>
+<table>
+    <tr><th>Feature</th><th>Description</th></tr>
+    <tr><td><strong>Symbol Page 1</strong></td><td>Punctuation &amp; math symbols (° ' ″ ! @ # $ % &amp; * etc.)</td></tr>
+    <tr><td><strong>Symbol Page 2</strong></td><td>Tactical symbols (✛ ⊕ ◎ ∿ △ ▽ ◇ ←→↑↓ ⊗ ⊘ ≈ ± etc.)</td></tr>
+    <tr><td><strong>Sym 1 / Sym 2 toggle</strong></td><td>Switch between symbol pages</td></tr>
+    <tr><td><strong>QWERTY letters</strong></td><td>Full alphabet with Shift and Caps Lock</td></tr>
+    <tr><td><strong>Numpad</strong></td><td>0-9, decimal point, and + on the right side</td></tr>
+    <tr><td><strong>Shift</strong></td><td>Toggles uppercase (auto-releases after one character)</td></tr>
+    <tr><td><strong>Caps Lock</strong></td><td>Toggles persistent uppercase</td></tr>
+    <tr><td><strong>Backspace (⌫)</strong></td><td>Delete character at cursor position</td></tr>
+    <tr><td><strong>◀ ▶ Arrow keys</strong></td><td>Move cursor left/right within text for mid-text editing</td></tr>
+    <tr><td><strong>Space</strong></td><td>Insert a space at cursor position</td></tr>
+    <tr><td><strong>ENT</strong></td><td>Insert a new line (OD green button)</td></tr>
+    <tr><td><strong>Clear</strong></td><td>Erase all typed text (red button)</td></tr>
+    <tr><td><strong>Text Color</strong></td><td>dat.GUI color picker to set text color</td></tr>
+    <tr><td><strong>Drag handle</strong></td><td>Drag the top bar to move the keyboard around</td></tr>
+    <tr><td><strong>Resize grip</strong></td><td>Yellow ◢ triangle in bottom-right corner — drag to resize</td></tr>
+    <tr><td><strong>Button flash</strong></td><td>Keys briefly flash yellow border on press for visual feedback</td></tr>
+</table>
+
+<div class="tip-box">
+    <strong>💡 Coordinate Tip:</strong> Use the <strong>°</strong>, <strong>'</strong>, and <strong>″</strong> symbols on the first symbol row to write DMS coordinates like <span style="font-family:Caveat;font-size:18px;">N43°28'36″</span>
+</div>
+
+<h3>4.3 Brush Settings</h3>
+<table>
+    <tr><th>Setting</th><th>Description</th><th>Range</th></tr>
+    <tr><td><strong>Color</strong></td><td>Brush color (dat.GUI picker, default black)</td><td>Full RGB spectrum</td></tr>
+    <tr><td><strong>Brush Size</strong></td><td>Drawing brush diameter (also controls text size)</td><td>1 - 100 pixels</td></tr>
+    <tr><td><strong>Eraser Size</strong></td><td>Eraser diameter</td><td>1 - 200 pixels</td></tr>
+    <tr><td><strong>Fill Shapes</strong></td><td>Fill shapes with semi-transparent color</td><td>On/Off</td></tr>
+</table>
+
+<h3>4.4 Layer System</h3>
+<p>The mod provides 2 drawing layers. Layers allow you to organize your drawings and edit them independently.</p>
+<ul>
+    <li><strong>Layer 1 / Layer 2 buttons:</strong> Switch active drawing layer</li>
+    <li><strong>L1 Visible / L2 Visible:</strong> Toggle layer visibility</li>
+    <li>Each layer has its own undo history</li>
+    <li>Clear Layer only affects the active layer</li>
+</ul>
+
+<h3>4.5 Actions</h3>
+<table>
+    <tr><th>Action</th><th>Description</th></tr>
+    <tr><td><strong>Undo</strong></td><td>Undo last action (up to 30 steps)</td></tr>
+    <tr><td><strong>Redo</strong></td><td>Redo undone action</td></tr>
+    <tr><td><strong>Clear Layer</strong></td><td>Clear active layer only</td></tr>
+    <tr><td><strong>Clear All</strong></td><td>Clear all layers and images</td></tr>
+
+</table>
+
+<h3>4.6 Image Placement</h3>
+<p>Place preset or custom images on the canvas, adjust them, then paint them permanently.</p>
+<table>
+    <tr><th>Control</th><th>Description</th></tr>
+    <tr><td><strong>Size</strong></td><td>Scale the placed image (50-1000 pixels)</td></tr>
+    <tr><td><strong>Opacity</strong></td><td>Image transparency (0-1)</td></tr>
+    <tr><td><strong>Rotation</strong></td><td>Rotate image (-180° to +180°)</td></tr>
+    <tr><td><strong>Paint to Canvas</strong></td><td>Permanently render image to active layer</td></tr>
+    <tr><td><strong>Import Image</strong></td><td>Load a custom image from your computer</td></tr>
+</table>
+
+<h3>4.7 Preset Images</h3>
+<p>Images in the <code>Images/</code> folder appear as clickable buttons. Click an image name to place it on the canvas.</p>
+
+<h3>4.8 Collapsible Panels</h3>
+<p>Click any section title (TOOLS, BRUSH SETTINGS, LAYERS, etc.) to collapse or expand that panel. This helps keep the UI compact when you don't need all options visible.</p>
+
+<!-- ════════════════════════════════════════════════ -->
+<h2 id="visual-examples">5. Visual Examples</h2>
+
+<h3>5.1 UI Overview — Control Panel</h3>
+<p>The control panel sits on the right side of the screen. Each section can be collapsed by clicking its title.</p>
+
+<div class="visual-example">
+    <svg width="220" height="410" viewBox="0 0 220 410">
+        <!-- Background -->
+        <rect x="0" y="0" width="220" height="410" rx="6" fill="rgba(0,0,0,0.85)" stroke="#695457" stroke-width="2"/>
+        
+        <!-- TOOLS section -->
+        <text x="10" y="20" fill="#f5c842" font-family="Consolas" font-size="11" font-weight="bold">TOOLS</text>
+        <line x1="10" y1="24" x2="210" y2="24" stroke="#69545733" stroke-width="1"/>
+        <rect x="10" y="30" width="95" height="22" rx="3" fill="#f5c842" stroke="#f5c842"/>
+        <text x="38" y="45" fill="#000" font-family="Consolas" font-size="10" font-weight="bold">Brush</text>
+        <rect x="115" y="30" width="95" height="22" rx="3" fill="#000" stroke="#695457"/>
+        <text x="140" y="45" fill="#f5c842" font-family="Consolas" font-size="10">Eraser</text>
+        
+        <!-- Shapes dropdown -->
+        <rect x="10" y="58" width="200" height="22" rx="3" fill="#000" stroke="#695457"/>
+        <text x="110" y="73" fill="#f5c842" font-family="Consolas" font-size="10" text-anchor="middle">Shapes ▾</text>
+        
+        <!-- Text button -->
+        <rect x="10" y="86" width="200" height="22" rx="3" fill="#000" stroke="#695457"/>
+        <text x="110" y="101" fill="#f5c842" font-family="Consolas" font-size="10" text-anchor="middle">Text</text>
+        
+        <!-- BRUSH SETTINGS -->
+        <text x="10" y="128" fill="#f5c842" font-family="Consolas" font-size="11" font-weight="bold">BRUSH SETTINGS</text>
+        <line x1="10" y1="132" x2="210" y2="132" stroke="#69545733"/>
+        <rect x="10" y="138" width="200" height="18" rx="3" fill="#1a1a1a" stroke="#695457"/>
+        <text x="15" y="151" fill="#aaa" font-family="Consolas" font-size="9">Color</text>
+        <rect x="160" y="139" width="46" height="16" rx="2" fill="#000" stroke="#f5c842"/>
+        
+        <text x="10" y="172" fill="#aaa" font-family="Consolas" font-size="9">Brush Size</text>
+        <text x="190" y="172" fill="#f5c842" font-family="Consolas" font-size="9">12</text>
+        <rect x="10" y="176" width="200" height="4" rx="2" fill="#333"/>
+        <circle cx="30" cy="178" r="5" fill="#f5c842"/>
+        
+        <text x="10" y="196" fill="#aaa" font-family="Consolas" font-size="9">Eraser Size</text>
+        <text x="190" y="196" fill="#f5c842" font-family="Consolas" font-size="9">50</text>
+        <rect x="10" y="200" width="200" height="4" rx="2" fill="#333"/>
+        <circle cx="70" cy="202" r="5" fill="#f5c842"/>
+        
+        <!-- LAYERS -->
+        <text x="10" y="228" fill="#f5c842" font-family="Consolas" font-size="11" font-weight="bold">LAYERS</text>
+        <line x1="10" y1="232" x2="210" y2="232" stroke="#69545733"/>
+        <rect x="10" y="238" width="95" height="22" rx="3" fill="#f5c842" stroke="#f5c842"/>
+        <text x="38" y="253" fill="#000" font-family="Consolas" font-size="10" font-weight="bold">Layer 1</text>
+        <rect x="115" y="238" width="95" height="22" rx="3" fill="#000" stroke="#695457"/>
+        <text x="140" y="253" fill="#f5c842" font-family="Consolas" font-size="10">Layer 2</text>
+        <rect x="10" y="266" width="95" height="22" rx="3" fill="#000" stroke="#695457"/>
+        <text x="27" y="281" fill="#f5c842" font-family="Consolas" font-size="9">L1 Visible</text>
+        <rect x="115" y="266" width="95" height="22" rx="3" fill="#000" stroke="#695457"/>
+        <text x="132" y="281" fill="#f5c842" font-family="Consolas" font-size="9">L2 Visible</text>
+        
+        <!-- ACTIONS -->
+        <text x="10" y="307" fill="#f5c842" font-family="Consolas" font-size="11" font-weight="bold">ACTIONS</text>
+        <line x1="10" y1="311" x2="210" y2="311" stroke="#69545733"/>
+        <rect x="10" y="316" width="95" height="22" rx="3" fill="#000" stroke="#695457"/>
+        <text x="42" y="331" fill="#f5c842" font-family="Consolas" font-size="10">Undo</text>
+        <rect x="115" y="316" width="95" height="22" rx="3" fill="#000" stroke="#695457"/>
+        <text x="148" y="331" fill="#f5c842" font-family="Consolas" font-size="10">Redo</text>
+        <rect x="10" y="344" width="95" height="22" rx="3" fill="#000" stroke="#695457"/>
+        <text x="22" y="359" fill="#f5c842" font-family="Consolas" font-size="9">Clear Layer</text>
+        <rect x="115" y="344" width="95" height="22" rx="3" fill="#4a1a1a" stroke="#f55"/>
+        <text x="135" y="359" fill="#f88" font-family="Consolas" font-size="9">Clear All</text>
+    </svg>
+    <div class="caption">Control Panel — Right side of the screen in DCS</div>
+</div>
+
+<h3>5.2 Shape Tools — What They Draw</h3>
+<div class="visual-example">
+    <svg width="700" height="280" viewBox="0 0 700 280">
+        <rect x="0" y="0" width="700" height="280" rx="6" fill="#111"/>
+
+        <!-- Row 1 -->
+        <!-- Line -->
+        <text x="85" y="20" fill="#f5c842" font-family="Consolas" font-size="11" text-anchor="middle">Line ╱</text>
+        <line x1="30" y1="100" x2="140" y2="40" stroke="#f5c842" stroke-width="3" stroke-linecap="round"/>
+        <text x="85" y="130" fill="#888" font-family="Consolas" font-size="9" text-anchor="middle">Click + Drag</text>
+
+        <!-- Circle -->
+        <text x="260" y="20" fill="#f5c842" font-family="Consolas" font-size="11" text-anchor="middle">Circle ○</text>
+        <circle cx="260" cy="80" r="40" fill="none" stroke="#f5c842" stroke-width="3"/>
+        <text x="260" y="130" fill="#888" font-family="Consolas" font-size="9" text-anchor="middle">Center + Radius</text>
+
+        <!-- Rectangle -->
+        <text x="435" y="20" fill="#f5c842" font-family="Consolas" font-size="11" text-anchor="middle">Rectangle □</text>
+        <rect x="380" y="40" width="110" height="70" rx="8" fill="none" stroke="#f5c842" stroke-width="3"/>
+        <text x="435" y="130" fill="#888" font-family="Consolas" font-size="9" text-anchor="middle">Corner to Corner</text>
+
+        <!-- Speech Bubble -->
+        <text x="610" y="20" fill="#f5c842" font-family="Consolas" font-size="11" text-anchor="middle">Bubble 💬</text>
+        <ellipse cx="610" cy="75" rx="55" ry="30" fill="none" stroke="#f5c842" stroke-width="3"/>
+        <path d="M 590 102 Q 585 120 568 130 Q 598 116 600 102" fill="none" stroke="#f5c842" stroke-width="3"/>
+        <text x="610" y="130" fill="#888" font-family="Consolas" font-size="9" text-anchor="middle">Corner to Corner</text>
+
+        <!-- Row 2 -->
+        <!-- Crosshair -->
+        <text x="85" y="160" fill="#f5c842" font-family="Consolas" font-size="11" text-anchor="middle">Crosshair ✛</text>
+        <line x1="60" y1="210" x2="110" y2="210" stroke="#f5c842" stroke-width="3"/>
+        <line x1="85" y1="185" x2="85" y2="235" stroke="#f5c842" stroke-width="3"/>
+        <text x="85" y="260" fill="#888" font-family="Consolas" font-size="9" text-anchor="middle">Center + Size</text>
+
+        <!-- Circle-Plus -->
+        <text x="260" y="160" fill="#f5c842" font-family="Consolas" font-size="11" text-anchor="middle">Circle-Plus ⊕</text>
+        <circle cx="260" cy="210" r="28" fill="none" stroke="#f5c842" stroke-width="3"/>
+        <line x1="240" y1="210" x2="280" y2="210" stroke="#f5c842" stroke-width="2"/>
+        <line x1="260" y1="190" x2="260" y2="230" stroke="#f5c842" stroke-width="2"/>
+        <text x="260" y="260" fill="#888" font-family="Consolas" font-size="9" text-anchor="middle">Center + Radius</text>
+
+        <!-- Bullseye -->
+        <text x="435" y="160" fill="#f5c842" font-family="Consolas" font-size="11" text-anchor="middle">Bullseye ◎</text>
+        <circle cx="435" cy="210" r="28" fill="none" stroke="#f5c842" stroke-width="3"/>
+        <circle cx="435" cy="210" r="18" fill="none" stroke="#f5c842" stroke-width="2"/>
+        <circle cx="435" cy="210" r="8" fill="none" stroke="#f5c842" stroke-width="2"/>
+        <text x="435" y="260" fill="#888" font-family="Consolas" font-size="9" text-anchor="middle">Center + Radius</text>
+
+        <!-- Circle-Cross -->
+        <text x="610" y="160" fill="#f5c842" font-family="Consolas" font-size="11" text-anchor="middle">Circle-Cross ⊗</text>
+        <circle cx="610" cy="210" r="28" fill="none" stroke="#f5c842" stroke-width="3"/>
+        <line x1="590" y1="190" x2="630" y2="230" stroke="#f5c842" stroke-width="2"/>
+        <line x1="630" y1="190" x2="590" y2="230" stroke="#f5c842" stroke-width="2"/>
+        <text x="610" y="260" fill="#888" font-family="Consolas" font-size="9" text-anchor="middle">Center + Radius</text>
+    </svg>
+    <div class="caption">Shape tools — All 8 shapes available from the Shapes ▾ dropdown</div>
+</div>
+
+<h3>5.3 Virtual Keyboard Layout</h3>
+<p>The on-screen keyboard appears when you click the canvas with the Text tool selected. It is draggable — grab the top bar to move it.</p>
+
+<div class="visual-example">
+    <svg width="540" height="310" viewBox="0 0 540 310">
+        <!-- Outer box (matches in-game: rgba(0,0,0,0.65), border #695457, border-radius 3) -->
+        <rect x="0" y="0" width="540" height="310" rx="3" fill="rgba(0,0,0,0.85)" stroke="#695457" stroke-width="1"/>
+
+        <!-- Drag handle bar -->
+        <rect x="1" y="1" width="538" height="15" rx="3" fill="#1a1a1a"/>
+        <text x="270" y="11" fill="#f5c84266" font-family="Consolas" font-size="7" text-anchor="middle">⣿⣿ Drag to move ⣿⣿</text>
+
+        <!-- Label row: left = label, right = dat.GUI Text Color picker -->
+        <text x="10" y="30" fill="#b3b3b3" font-family="Consolas" font-size="8">Enter text for the canvas:</text>
+        <rect x="370" y="21" width="100" height="13" rx="2" fill="#1a1a1a" stroke="#333"/>
+        <text x="376" y="30" fill="#bbb" font-family="Consolas" font-size="7">Text Color</text>
+        <rect x="444" y="23" width="22" height="9" rx="1" fill="#ffffff" stroke="#666"/>
+
+        <!-- Display area (off-white 50% opacity, dark text, Caveat font) -->
+        <rect x="10" y="36" width="520" height="28" rx="3" fill="#c8c8c8" fill-opacity="0.5" stroke="#695457"/>
+        <text x="18" y="55" fill="#111" font-family="Caveat" font-size="14">N43°28'36″E069°35'42<tspan fill="#a50a45">|</tspan></text>
+
+        <!-- ═══ Numpad separator line ═══ -->
+        <line x1="302" y1="70" x2="302" y2="226" stroke="#4a353866" stroke-width="1"/>
+
+        <!-- ═══ SYMBOL ROW 1: ° ' ″ ! @ # $ % &amp; * ═══ -->
+        <g transform="translate(10, 70)" font-family="Consolas" font-size="10" text-anchor="middle">
+            <rect x="0" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="11.5" y="14" fill="#f5c842">°</text>
+            <rect x="25" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="36.5" y="14" fill="#f5c842">'</text>
+            <rect x="50" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="61.5" y="14" fill="#f5c842">″</text>
+            <rect x="75" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="86.5" y="14" fill="#f5c842">!</text>
+            <rect x="100" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="111.5" y="14" fill="#f5c842">@</text>
+            <rect x="125" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="136.5" y="14" fill="#f5c842">#</text>
+            <rect x="150" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="161.5" y="14" fill="#f5c842">$</text>
+            <rect x="175" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="186.5" y="14" fill="#f5c842">%</text>
+            <rect x="200" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="211.5" y="14" fill="#f5c842">&amp;</text>
+            <rect x="225" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="236.5" y="14" fill="#f5c842">*</text>
+        </g>
+
+        <!-- ═══ SYMBOL ROW 2: ( ) - = [ \ ; . ? ═══ -->
+        <g transform="translate(10, 93)" font-family="Consolas" font-size="10" text-anchor="middle">
+            <rect x="0" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="11.5" y="14" fill="#f5c842">(</text>
+            <rect x="25" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="36.5" y="14" fill="#f5c842">)</text>
+            <rect x="50" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="61.5" y="14" fill="#f5c842">-</text>
+            <rect x="75" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="86.5" y="14" fill="#f5c842">=</text>
+            <rect x="100" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="111.5" y="14" fill="#f5c842">[</text>
+            <rect x="125" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="136.5" y="14" fill="#f5c842">\</text>
+            <rect x="150" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="161.5" y="14" fill="#f5c842">;</text>
+            <rect x="175" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="186.5" y="14" fill="#f5c842">.</text>
+            <rect x="200" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="211.5" y="14" fill="#f5c842">?</text>
+        </g>
+
+        <!-- ── Divider lines + Sym 2 page toggle ── -->
+        <line x1="10" y1="120" x2="95" y2="120" stroke="#4a353888"/>
+        <rect x="100" y="115" width="42" height="11" rx="2" fill="#111" stroke="#4a3538"/>
+        <text x="121" y="123" fill="#ffe566" font-family="Consolas" font-size="7" text-anchor="middle">Sym 2</text>
+        <line x1="147" y1="120" x2="260" y2="120" stroke="#4a353888"/>
+
+        <!-- ═══ QWERTY ROW + ⌫ ═══ -->
+        <g transform="translate(10, 130)" font-family="Consolas" font-size="10" text-anchor="middle">
+            <rect x="0" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="11.5" y="14" fill="#f5c842">q</text>
+            <rect x="25" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="36.5" y="14" fill="#f5c842">w</text>
+            <rect x="50" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="61.5" y="14" fill="#f5c842">e</text>
+            <rect x="75" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="86.5" y="14" fill="#f5c842">r</text>
+            <rect x="100" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="111.5" y="14" fill="#f5c842">t</text>
+            <rect x="125" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="136.5" y="14" fill="#f5c842">y</text>
+            <rect x="150" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="161.5" y="14" fill="#f5c842">u</text>
+            <rect x="175" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="186.5" y="14" fill="#f5c842">i</text>
+            <rect x="200" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="211.5" y="14" fill="#f5c842">o</text>
+            <rect x="225" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="236.5" y="14" fill="#f5c842">p</text>
+            <!-- ⌫ Backspace -->
+            <rect x="252" y="0" width="30" height="21" rx="2" fill="#111" stroke="#4a3538"/><text x="267" y="14" fill="#ffe566" font-size="9">⌫</text>
+        </g>
+
+        <!-- ═══ CAPS + ASDF ROW ═══ -->
+        <g transform="translate(10, 153)" font-family="Consolas" font-size="10" text-anchor="middle">
+            <rect x="0" y="0" width="30" height="21" rx="2" fill="#111" stroke="#4a3538"/><text x="15" y="14" fill="#ffe566" font-size="7">Caps</text>
+            <rect x="33" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="44.5" y="14" fill="#f5c842">a</text>
+            <rect x="58" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="69.5" y="14" fill="#f5c842">s</text>
+            <rect x="83" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="94.5" y="14" fill="#f5c842">d</text>
+            <rect x="108" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="119.5" y="14" fill="#f5c842">f</text>
+            <rect x="133" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="144.5" y="14" fill="#f5c842">g</text>
+            <rect x="158" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="169.5" y="14" fill="#f5c842">h</text>
+            <rect x="183" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="194.5" y="14" fill="#f5c842">j</text>
+            <rect x="208" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="219.5" y="14" fill="#f5c842">k</text>
+            <rect x="233" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="244.5" y="14" fill="#f5c842">l</text>
+        </g>
+
+        <!-- ═══ SHIFT + ZXCV ROW ═══ -->
+        <g transform="translate(10, 176)" font-family="Consolas" font-size="10" text-anchor="middle">
+            <rect x="0" y="0" width="34" height="21" rx="2" fill="#111" stroke="#4a3538"/><text x="17" y="14" fill="#ffe566" font-size="7">Shift</text>
+            <rect x="37" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="48.5" y="14" fill="#f5c842">z</text>
+            <rect x="62" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="73.5" y="14" fill="#f5c842">x</text>
+            <rect x="87" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="98.5" y="14" fill="#f5c842">c</text>
+            <rect x="112" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="123.5" y="14" fill="#f5c842">v</text>
+            <rect x="137" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="148.5" y="14" fill="#f5c842">b</text>
+            <rect x="162" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="173.5" y="14" fill="#f5c842">n</text>
+            <rect x="187" y="0" width="23" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="198.5" y="14" fill="#f5c842">m</text>
+        </g>
+
+        <!-- ═══ BOTTOM ROW: Clear ◀ Space ▶ ENT ═══ -->
+        <g transform="translate(10, 201)" font-family="Consolas" text-anchor="middle">
+            <rect x="0" y="0" width="32" height="21" rx="2" fill="#3a1515" stroke="#e17f7f"/><text x="16" y="14" fill="#e17f7f" font-size="8">Clear</text>
+            <rect x="35" y="0" width="23" height="21" rx="2" fill="#111" stroke="#4a3538"/><text x="46.5" y="14" fill="#ffe566" font-size="9">◀</text>
+            <rect x="61" y="0" width="110" height="21" rx="2" fill="#111" stroke="#4a3538"/><text x="116" y="14" fill="#ffe566" font-size="8">Space</text>
+            <rect x="174" y="0" width="23" height="21" rx="2" fill="#111" stroke="#4a3538"/><text x="185.5" y="14" fill="#ffe566" font-size="9">▶</text>
+            <rect x="200" y="0" width="36" height="21" rx="2" fill="#4b5320" stroke="#6b7a2e"/><text x="218" y="14" fill="#fff" font-size="8" font-weight="bold">ENT</text>
+        </g>
+
+        <!-- ═══ NUMPAD (right side) ═══ -->
+        <text x="355" y="80" fill="#898989" font-family="Consolas" font-size="8" text-anchor="middle">Numpad</text>
+        <g transform="translate(312, 86)" font-family="Consolas" font-size="11" text-anchor="middle">
+            <rect x="0" y="0" width="26" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="13" y="15" fill="#f5c842">7</text>
+            <rect x="28" y="0" width="26" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="41" y="15" fill="#f5c842">8</text>
+            <rect x="56" y="0" width="26" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="69" y="15" fill="#f5c842">9</text>
+            <rect x="0" y="23" width="26" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="13" y="38" fill="#f5c842">4</text>
+            <rect x="28" y="23" width="26" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="41" y="38" fill="#f5c842">5</text>
+            <rect x="56" y="23" width="26" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="69" y="38" fill="#f5c842">6</text>
+            <rect x="0" y="46" width="26" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="13" y="61" fill="#f5c842">1</text>
+            <rect x="28" y="46" width="26" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="41" y="61" fill="#f5c842">2</text>
+            <rect x="56" y="46" width="26" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="69" y="61" fill="#f5c842">3</text>
+            <rect x="0" y="69" width="26" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="13" y="84" fill="#f5c842">0</text>
+            <rect x="28" y="69" width="26" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="41" y="84" fill="#f5c842">.</text>
+            <rect x="56" y="69" width="26" height="21" rx="2" fill="#000" stroke="#4a3538"/><text x="69" y="84" fill="#f5c842">+</text>
+            <!-- Numpad ⌫ -->
+            <rect x="0" y="93" width="82" height="21" rx="2" fill="#111" stroke="#4a3538"/><text x="41" y="108" fill="#ffe566" font-size="9">⌫</text>
+        </g>
+
+        <!-- ═══ ACTION BUTTONS (full width) ═══ -->
+        <rect x="10" y="232" width="258" height="24" rx="2" fill="#000" stroke="#a50a45"/>
+        <text x="139" y="248" fill="#f5c842" font-family="Consolas" font-size="10" font-weight="bold" text-anchor="middle">Add Text</text>
+        <rect x="273" y="232" width="257" height="24" rx="2" fill="#000" stroke="#695457"/>
+        <text x="401" y="248" fill="#f5c842" font-family="Consolas" font-size="10" text-anchor="middle">Cancel</text>
+
+        <!-- Resize grip (yellow ◢ triangle, bottom-right) -->
+        <text x="530" y="303" fill="#f5c842" font-family="sans-serif" font-size="12" text-anchor="end">◢</text>
+    </svg>
+    <div class="caption">Virtual Keyboard — complete layout as it appears in DCS</div>
+</div>
+
+<h3>5.4 Text Tool Workflow</h3>
+<div class="visual-example">
+    <svg width="700" height="120" viewBox="0 0 700 120">
+        <rect x="0" y="0" width="700" height="120" rx="6" fill="#111"/>
+        
+        <!-- Step 1 -->
+        <rect x="10" y="10" width="120" height="100" rx="4" fill="#0a0a0a" stroke="#69545755"/>
+        <text x="70" y="30" fill="#f5c842" font-family="Consolas" font-size="10" text-anchor="middle">1. Select Text</text>
+        <rect x="30" y="45" width="80" height="20" rx="3" fill="#f5c842" stroke="#f5c842"/>
+        <text x="70" y="59" fill="#000" font-family="Consolas" font-size="10" text-anchor="middle" font-weight="bold">Text</text>
+        <text x="70" y="80" fill="#666" font-family="Consolas" font-size="8" text-anchor="middle">Click button</text>
+        
+        <!-- Arrow -->
+        <text x="145" y="60" fill="#f5c842" font-size="20">→</text>
+        
+        <!-- Step 2 -->
+        <rect x="165" y="10" width="120" height="100" rx="4" fill="#0a0a0a" stroke="#69545755"/>
+        <text x="225" y="30" fill="#f5c842" font-family="Consolas" font-size="10" text-anchor="middle">2. Click Canvas</text>
+        <circle cx="225" cy="60" r="8" fill="none" stroke="#f5c842" stroke-width="1.5" stroke-dasharray="3"/>
+        <line x1="225" y1="52" x2="225" y2="68" stroke="#f5c842" stroke-width="1"/>
+        <line x1="217" y1="60" x2="233" y2="60" stroke="#f5c842" stroke-width="1"/>
+        <text x="225" y="88" fill="#666" font-family="Consolas" font-size="8" text-anchor="middle">Opens keyboard</text>
+        
+        <!-- Arrow -->
+        <text x="300" y="60" fill="#f5c842" font-size="20">→</text>
+        
+        <!-- Step 3 -->
+        <rect x="320" y="10" width="120" height="100" rx="4" fill="#0a0a0a" stroke="#69545755"/>
+        <text x="380" y="30" fill="#f5c842" font-family="Consolas" font-size="10" text-anchor="middle">3. Type Text</text>
+        <rect x="335" y="40" width="90" height="25" rx="3" fill="#c8c8c8" fill-opacity="0.5" stroke="#695457"/>
+        <text x="340" y="57" fill="#111" font-family="Caveat" font-size="14">wp-1|</text>
+        <text x="380" y="88" fill="#666" font-family="Consolas" font-size="8" text-anchor="middle">Click on-screen keys</text>
+        
+        <!-- Arrow -->
+        <text x="455" y="60" fill="#f5c842" font-size="20">→</text>
+        
+        <!-- Step 4 -->
+        <rect x="475" y="10" width="120" height="100" rx="4" fill="#0a0a0a" stroke="#69545755"/>
+        <text x="535" y="30" fill="#f5c842" font-family="Consolas" font-size="10" text-anchor="middle">4. Drag &amp; Place</text>
+        <text x="520" y="60" fill="#fff" font-family="Caveat" font-size="16">wp-1</text>
+        <path d="M 530 65 L 550 75" stroke="#f5c842" stroke-width="1" stroke-dasharray="3"/>
+        <text x="555" y="80" fill="#f5c842" font-size="10">↖ drag</text>
+        <text x="535" y="100" fill="#666" font-family="Consolas" font-size="8" text-anchor="middle">Then "Place Text"</text>
+        
+        <!-- Arrow -->
+        <text x="610" y="60" fill="#f5c842" font-size="20">→</text>
+        
+        <!-- Step 5 -->
+        <rect x="630" y="10" width="60" height="100" rx="4" fill="#0a0a0a" stroke="#4caf50"/>
+        <text x="660" y="50" fill="#4caf50" font-family="Consolas" font-size="10" text-anchor="middle">Done!</text>
+        <text x="660" y="70" fill="#4caf50" font-size="16" text-anchor="middle">✓</text>
+    </svg>
+    <div class="caption">Text Tool Workflow — From selecting the tool to placing text on the canvas</div>
+</div>
+
+<h3>5.5 Drawing Example — Waypoint Annotation</h3>
+<p>Here's an example of what you can create using the text tool to annotate waypoints with coordinates:</p>
+
+<div class="visual-example">
+    <svg width="500" height="280" viewBox="0 0 500 280">
+        <rect x="0" y="0" width="500" height="280" rx="6" fill="#2a3a2a"/>
+        
+        <!-- Simulated terrain -->
+        <path d="M 0 200 Q 50 180 100 190 Q 200 170 300 185 Q 400 175 500 195 L 500 280 L 0 280 Z" fill="#3a4a3a"/>
+        <line x1="0" y1="140" x2="500" y2="140" stroke="#555" stroke-width="0.5" stroke-dasharray="5"/>
+        <line x1="0" y1="200" x2="500" y2="200" stroke="#555" stroke-width="0.5" stroke-dasharray="5"/>
+        
+        <!-- Route line -->
+        <path d="M 80 80 L 200 120 L 350 90 L 450 150" fill="none" stroke="#f5c842" stroke-width="2" stroke-dasharray="8,4"/>
+        
+        <!-- WP1 -->
+        <circle cx="80" cy="80" r="6" fill="none" stroke="#f5c842" stroke-width="2"/>
+        <line x1="74" y1="80" x2="86" y2="80" stroke="#f5c842" stroke-width="1.5"/>
+        <line x1="80" y1="74" x2="80" y2="86" stroke="#f5c842" stroke-width="1.5"/>
+        <text x="75" y="55" fill="#fff" font-family="Caveat" font-size="16">WP-1</text>
+        <text x="75" y="70" fill="#ccc" font-family="Caveat" font-size="12">N43°28'36″</text>
+        
+        <!-- WP2 -->
+        <circle cx="200" cy="120" r="6" fill="none" stroke="#f5c842" stroke-width="2"/>
+        <line x1="194" y1="120" x2="206" y2="120" stroke="#f5c842" stroke-width="1.5"/>
+        <line x1="200" y1="114" x2="200" y2="126" stroke="#f5c842" stroke-width="1.5"/>
+        <text x="195" y="105" fill="#fff" font-family="Caveat" font-size="16">WP-2</text>
+        <text x="195" y="145" fill="#ccc" font-family="Caveat" font-size="12">FENCE IN</text>
+        
+        <!-- WP3 / Target -->
+        <circle cx="350" cy="90" r="10" fill="none" stroke="#f44" stroke-width="2"/>
+        <circle cx="350" cy="90" r="3" fill="#f44"/>
+        <text x="345" y="75" fill="#f88" font-family="Caveat" font-size="16">TARGET</text>
+        <text x="345" y="115" fill="#ccc" font-family="Caveat" font-size="12">HDG 045</text>
+        
+        <!-- WP4 -->
+        <circle cx="450" cy="150" r="6" fill="none" stroke="#f5c842" stroke-width="2"/>
+        <text x="425" y="140" fill="#fff" font-family="Caveat" font-size="16">WP-4</text>
+        <text x="425" y="175" fill="#ccc" font-family="Caveat" font-size="12">RTB</text>
+
+        <!-- Speech bubble example -->
+        <ellipse cx="130" cy="220" rx="65" ry="25" fill="none" stroke="#f5c842" stroke-width="1.5"/>
+        <path d="M 110 242 Q 100 260 85 270 Q 115 255 115 242" fill="none" stroke="#f5c842" stroke-width="1.5"/>
+        <text x="100" y="225" fill="#f5c842" font-family="Caveat" font-size="13">CAUTION! SAM</text>
+    </svg>
+    <div class="caption">Example — Waypoint annotations with coordinates, headings, and speech bubbles</div>
+</div>
+
+<h3>5.6 Layer System Overview</h3>
+<div class="visual-example">
+    <svg width="460" height="180" viewBox="0 0 460 180">
+        <rect x="0" y="0" width="460" height="180" rx="6" fill="#111"/>
+        
+        <!-- Layer 2 (back) -->
+        <g transform="translate(30, 20)">
+            <rect x="0" y="0" width="160" height="120" rx="4" fill="#0a0a0a" stroke="#888" stroke-dasharray="3"/>
+            <text x="80" y="15" fill="#888" font-family="Consolas" font-size="10" text-anchor="middle">Layer 2</text>
+            <circle cx="80" cy="65" r="30" fill="none" stroke="#f88" stroke-width="2"/>
+            <text x="80" y="110" fill="#f88" font-family="Caveat" font-size="14" text-anchor="middle">TARGET</text>
+        </g>
+        
+        <!-- Plus sign -->
+        <text x="210" y="85" fill="#f5c842" font-size="24" text-anchor="middle">+</text>
+        
+        <!-- Layer 1 (front) -->
+        <g transform="translate(230, 20)">
+            <rect x="0" y="0" width="160" height="120" rx="4" fill="#0a0a0a" stroke="#f5c842" stroke-dasharray="3"/>
+            <text x="80" y="15" fill="#f5c842" font-family="Consolas" font-size="10" text-anchor="middle">Layer 1</text>
+            <path d="M 30 50 L 80 70 L 130 45" fill="none" stroke="#f5c842" stroke-width="2"/>
+            <text x="50" y="45" fill="#fff" font-family="Caveat" font-size="12">WP-1</text>
+            <text x="110" y="40" fill="#fff" font-family="Caveat" font-size="12">WP-2</text>
+            <text x="80" y="100" fill="#ccc" font-family="Caveat" font-size="11" text-anchor="middle">N43°28'36″</text>
+        </g>
+        
+        <!-- Result label -->
+        <text x="230" y="160" fill="#f5c842" font-family="Consolas" font-size="10" text-anchor="middle">= Combined result on canopy glass</text>
+    </svg>
+    <div class="caption">Layer System — Draw on separate layers, combine on the canopy</div>
+</div>
+
+<!-- ════════════════════════════════════════════════ -->
+<h2 id="how-it-works">6. How It Works (Technical)</h2>
+
+<h3>6.1 Rendering Engine</h3>
+<p>The mod uses <strong>PIXI.js</strong> (legacy version for compatibility) with Canvas rendering:</p>
+<ul>
+    <li><strong>SpritePool:</strong> Reuses sprite objects for efficient brush strokes</li>
+    <li><strong>DrawBuffer:</strong> Collects brush points each frame</li>
+    <li><strong>RenderTexture:</strong> Each layer has its own render texture (1024x1024)</li>
+    <li><strong>Ticker:</strong> Batch-renders all brush strokes every frame for performance</li>
+</ul>
+
+<h3>6.2 Game Integration</h3>
+<p>The mod integrates with DCS through Heatblur's interface:</p>
+<pre>
+// interface.js - Communicates with DCS
+function hb_send_proxy(action) {
+    if (typeof window.edQuery === "function") {
+        window.edQuery({ request: action, ... });
+    }
+}
+
+// App.js - Called when closing the grease pencil UI
+window.hideGui = function() {
+    hb_send_proxy("close");
+}
+</pre>
+
+<h3>6.3 Color Picker (dat.GUI)</h3>
+<p>The original DCS embedded browser doesn't support native HTML5 <code>&lt;input type="color"&gt;</code>. We use <strong>dat.GUI</strong> which provides its own color picker widget that works in the game. Two color pickers are available:</p>
+<ul>
+    <li><strong>Brush Color</strong> — in the Brush Settings panel, controls drawing/shape color</li>
+    <li><strong>Text Color</strong> — inside the keyboard overlay, controls text color independently</li>
+</ul>
+
+<h3>6.4 Virtual Keyboard (DCS Keyboard Limitation)</h3>
+<div class="warning-box">
+    <strong>⚠️ Why a virtual keyboard?</strong><br>
+    DCS World captures keyboard input at the OS/driver level before it reaches the embedded browser. This means <code>&lt;textarea&gt;</code>, <code>&lt;input&gt;</code>, <code>contentEditable</code>, and even <code>&lt;iframe&gt;</code> elements cannot receive keyboard events inside DCS. The virtual keyboard bypasses this completely by using only mouse click events.
+</div>
+
+<h3>6.5 Text Rendering</h3>
+<p>Text is rendered at <strong>2x internal resolution</strong> and scaled back down for crisp, sharp letters. A subtle matching-color stroke is applied to further define letter edges. This prevents the "fuzzy text" issue common with PIXI.js Canvas mode.</p>
+
+<h3>6.6 Custom Dropdown (Shapes)</h3>
+<p>DCS's embedded CEF browser does not support native <code>&lt;select&gt;</code> popup menus. The Shapes dropdown is built from styled <code>&lt;div&gt;</code> elements with click handlers — the menu opens on click and closes when selecting an item or clicking elsewhere.</p>
+
+<h3>6.7 UI Theme</h3>
+<p>The UI uses a <strong>Jester 2.0</strong> inspired dark theme:</p>
+<ul>
+    <li>Panel backgrounds: See-through black (<code>rgba(0,0,0,0.65)</code>)</li>
+    <li>Buttons: Black background with yellow text (<code>#f5c842</code>)</li>
+    <li>Section titles: Yellow</li>
+    <li>Borders: Muted mauve (<code>#695457</code>)</li>
+    <li>Enter key: OD green (<code>#4b5320</code>) with white text</li>
+    <li>Clear key: Dark red with red text</li>
+    <li>Everything scaled to approximately 75% for a compact look</li>
+</ul>
+
+<h3>6.8 Auto-Persistence</h3>
+<p>Drawings are automatically saved to the browser's <code>localStorage</code> after every action (debounced by 1 second) and restored on startup. No manual save/load is required.</p>
+<pre>
+// Auto-save: debounced 1s after each drawing action
+// Extracts all layers as PNG data URLs → localStorage
+// Auto-load: restores from localStorage on startup (500ms delay)
+</pre>
+
+<!-- ════════════════════════════════════════════════ -->
+<h2 id="updating-images">7. Updating the Image List</h2>
+
+<h3>7.1 How to Update</h3>
+<p>Whenever you add, remove, or rename images in the <code>Images/</code> folder:</p>
+<ol>
+    <li>Double-click <code>UpdateImages.bat</code></li>
+    <li>A window will show the images found</li>
+    <li>Press Enter to close</li>
+    <li>Launch DCS — your new images will appear in the Preset Images list</li>
+</ol>
+
+<div class="tip-box">
+    <strong>No Python Required!</strong> The script uses PowerShell, which is built into Windows. Just double-click the .bat file.
+</div>
+
+<h3>7.2 Supported Image Formats</h3>
+<p>PNG, JPG, JPEG, GIF, BMP, WebP, SVG</p>
+
+<h3>7.3 Images.json Format</h3>
+<p>The script generates a simple JSON file listing all images:</p>
+<pre>
+{
+  "images": [
+    "image1.png",
+    "image2.jpg",
+    "tactical_map.png"
+  ]
+}
+</pre>
+
+<!-- ════════════════════════════════════════════════ -->
+<h2 id="troubleshooting">8. Troubleshooting</h2>
+
+<h3>Color picker doesn't work</h3>
+<p>Ensure <code>dat.gui.min.js</code> is in the <code>js/</code> folder and loaded in <code>index.html</code>.</p>
+
+<h3>Images don't appear in the list</h3>
+<ul>
+    <li>Run <code>UpdateImages.bat</code> after adding new images</li>
+    <li>Check that <code>Images.json</code> was updated (open it in a text editor)</li>
+    <li>Make sure images are in supported formats (PNG, JPG, etc.)</li>
+</ul>
+
+<h3>Can't type with keyboard in DCS</h3>
+<p>This is by design — DCS captures keyboard at the OS level. Use the <strong>on-screen virtual keyboard</strong> that appears when you click the canvas with the Text tool. Click the letter buttons to compose text.</p>
+
+<h3>Virtual keyboard is in the way</h3>
+<p>Grab the <strong>drag handle</strong> at the top of the keyboard (labeled "⣿⣿ Drag to move ⣿⣿") and move it anywhere on screen.</p>
+
+<h3>Drawings don't save</h3>
+<p>The save feature uses browser localStorage. Some embedded browsers may have limitations. Try clicking Save explicitly before closing.</p>
+
+<h3>Middle-click doesn't work as eraser</h3>
+<p>This depends on your mouse configuration. Use the Eraser button instead.</p>
+
+<h3>Performance issues</h3>
+<ul>
+    <li>The mod uses Canvas rendering (not WebGL) for compatibility</li>
+    <li>Very large brush sizes may cause slowdown</li>
+    <li>Clear the canvas if it becomes sluggish</li>
+</ul>
+
+<h3>Text doesn't appear in handwritten font</h3>
+<p>The text tool uses the "Caveat" font from Google Fonts. This requires an internet connection when using the mod. If offline, text will fall back to Arial.</p>
+
+<hr>
+<p style="text-align: center; color: #888; margin-top: 40px;">
+    F-4E Grease Pencil Enhanced v4.0 — Based on Heatblur Simulations' original implementation<br>
+    For DCS World
+</p>
+
+</body>
+</html>
