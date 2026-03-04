@@ -1162,6 +1162,7 @@ $(document).ready(function () {
                 
                 $input.val(flowToDisplay);
                 $('#perf_gross_weight').val(state.weight).trigger('change');
+                computePerf();
                 $('.tab-btn[data-target="tab-perf"]').click();
             } catch(e) {}
         } 
