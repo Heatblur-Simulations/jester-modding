@@ -57,7 +57,6 @@ function RadarPPIMode:Register()
             end
             return nil
         end
-        Log("[PPI] AdjustGain running (PPI inactive)")
         return original_adjust_gain()
     end
 
