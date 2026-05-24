@@ -6,10 +6,7 @@ local Behavior = require('base.Behavior')
 
 local RadarPPIMode = Class(Behavior)
 
--- Gain constants
-local GAIN_PPI   = 0.65  -- lower gain for PPI ground mapping, best between 0.6 to 0.7
-local GAIN_FAR   = 0.6   -- Jester default for targets > 25 nm
-local GAIN_CLOSE = 0.5   -- Jester default for targets <= 25 nm
+local GAIN_PPI = 0.68  -- lower gain for PPI ground mapping, best between 0.6 to 0.7
 
 -- Module-level state
 RadarPPIMode.is_registered = false
@@ -30,29 +27,42 @@ function RadarPPIMode:Register()
     local Api    = require('radar.Api')
     RadarState   = State
 
-    -- Patch Api.ClickIffButton so IFF is suppressed during PPI
+    -- Patch Api.ClickIffButton so the routine check_iff urge is suppressed during PPI
     local original_click_iff = Api.ClickIffButton
     Api.ClickIffButton = function(task)
         if self.is_ppi_active then
-            return task  -- skip IFF press, return task for chaining
+            Log("[PPI] Suppressed IFF button press")
+            return task
         end
         return original_click_iff(task)
+    end
+
+    -- Patch Phases.IdentifyTargets so Jester stops detecting/announcing contacts
+    local original_identify_targets = Phases.IdentifyTargets
+    Phases.IdentifyTargets = function()
+        if self.is_ppi_active then
+            Log("[PPI] Suppressed IdentifyTargets")
+            return nil
+        end
+        return original_identify_targets()
     end
 
     -- Patch Phases.AdjustGain so the RadarAdjustGain() call is skipped
     local original_adjust_gain = Phases.AdjustGain
     Phases.AdjustGain = function()
         if self.is_ppi_active then
+            Log("[PPI] Suppressed AdjustGain (keeping GAIN_PPI=" .. tostring(GAIN_PPI) .. ")")
             if State.pilot_requested_scan_zone == State.current_scan_zone then
                 State.pilot_requested_scan_zone = nil
             end
-            return nil  -- skip RadarAdjustGain() to have GAIN_PPI constant
+            return nil
         end
+        Log("[PPI] AdjustGain running (PPI inactive)")
         return original_adjust_gain()
     end
 
-    -- Shared entry point for both PPI_WIDE and PPI_NAR.
     local function enter_ppi(task, scan_type, range_text)
+        Log("[PPI] Entering PPI: " .. scan_type .. " " .. range_text)
         State.SetEventTask(task)
         self.is_ppi_active = true
 
@@ -61,12 +71,13 @@ function RadarPPIMode:Register()
         State.target_to_highlight                 = nil
         State.target_to_lock                      = nil
         State.pilot_requested_target_to_highlight = nil
-        -- Prevent Jester from resuming auto-focus on bandits during PPI.
         State.is_auto_focus_allowed = false
-        -- Depress the scan zone to ground level at 30 nm.
+        -- Depress the scan zone to ground level. Scale range with display
+        -- range so the antenna points at the correct angle.
+        local scan_zone_ranges = { nm_50 = NM(30), nm_25 = NM(15), nm_10 = NM(5) }
         State.pilot_requested_scan_zone = {
             name        = "CUSTOM",
-            range       = NM(30),
+            range       = scan_zone_ranges[range_text],
             altitude    = ft(0),
             is_relative = false,
         }
@@ -80,6 +91,13 @@ function RadarPPIMode:Register()
         State.pilot_requested_range     = Config.range[range_text]
     end
 
+    local function exit_ppi()
+        Log("[PPI] Exiting PPI")
+        self.is_ppi_active = false
+        State.is_auto_focus_allowed = true
+        State.pilot_requested_scan_zone = nil
+    end
+
     ListenTo("radar_ppi_wide", "RadarPPIMode", function(task, range_text)
         enter_ppi(task, "PPI_WIDE", range_text)
     end)
@@ -88,15 +106,18 @@ function RadarPPIMode:Register()
         enter_ppi(task, "PPI_NAR", range_text)
     end)
 
-    -- Fires alongside the existing radar_display_range handler in UserActions.lua
-    -- when the pilot picks a standard B_WIDE/B_NAR range via Wheel. 
-    ListenTo("radar_display_range", "RadarPPIModeGainReset", function(task, range_and_scan_type)
+    -- Exit PPI when the pilot picks a standard B_WIDE/B_NAR range via Wheel.
+    ListenTo("radar_display_range", "RadarPPIModeExit", function()
         if not self.is_ppi_active then return end
-        self.is_ppi_active = false
-        State.is_auto_focus_allowed = true
-        local range_text = string.match(range_and_scan_type, "(.+);")
-        local gain = (range_text == "nm_25") and GAIN_CLOSE or GAIN_FAR
-        task:ClickFast("Radar Gain Coarse", gain)
+        exit_ppi()
+    end)
+
+    -- Exit PPI when the pilot double-clicks the Jester context action button.
+    ListenTo("radar_context_a2a_double", "RadarPPIModeContextExit", function()
+        if not self.is_ppi_active then return end
+        exit_ppi()
+        State.pilot_requested_scan_type = Config.scan_type.wide
+        State.pilot_requested_range = Config.range.nm_50
     end)
 
     Wheel.AddItem(Wheel.Item:new({
@@ -122,7 +143,7 @@ function RadarPPIMode:Tick()
     end
 
     -- Prevent the A2A zone-rotation timeout from triggering while in PPI. Prevent Jester from
-    -- saying "Going to regular scan" and trying to set default elevation etc.
+    -- saying "Going to regular scan" and trying to set default scan elevation etc.
     if self.is_ppi_active then
         RadarState.time_spent_scanning_zone_no_bandits = s(0)
     end
