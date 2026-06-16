@@ -4,6 +4,7 @@ ListenTo("enter_bombing_solution", "BombingCalculator", function(task, args)
 	local startIndex, endIndex, delivery_mode_raw, tgt_alt_dist_raw, release_range_raw, drag_coefficient_raw, pullup_timer_raw, loft_angle_raw = string.find(args, "(.+);(.+);(.+);(.+);(.+);(.+)")
 	if not startIndex then
 		-- Invalid format
+		Log("CantDo: Enter Bombing Solution - Invalid data format")
 		task:CantDo()
 		return
 	end
@@ -24,6 +25,7 @@ ListenTo("enter_bombing_solution", "BombingCalculator", function(task, args)
 			or (drag_coefficient_raw == "" and delivery_mode_raw == "DT")
 			or (drag_coefficient_raw == "" and delivery_mode_raw == "TGT-Find")
 	then
+		Log("CantDo: Enter Bombing Solution - Data has invalid values")
 		task:CantDo()
 		return
 	end
@@ -58,12 +60,14 @@ end)
 
 ListenTo("enter_release_advance", "BombingCalculator", function(task, release_advance_raw)
 	if release_advance_raw == "" then
+		Log("CantDo: Enter Release Advance - No Release Advance given")
 		task:CantDo()
 		return
 	end
 	local release_advance = s(tonumber(release_advance_raw))
 
 	if release_advance > s(999) or release_advance < s(0) then
+		Log("CantDo: Enter Release Advance - Value out of valid range")
 		task:CantDo()
 		return
 	end
@@ -74,12 +78,14 @@ end)
 
 ListenTo("enter_wrcs_agm", "BombingCalculator", function(task, target_alt)
 	if target_alt == "" then
+		Log("CantDo: Enter WRCS AGM - No value given")
 		task:CantDo()
 		return
 	end
 	local target_alt = ft(tonumber(target_alt))
 
 	if target_alt < ft(0) then
+		Log("CantDo: Enter WRCS AGM - Negative value")
 		task:CantDo()
 	end
 	task:Roger():Click("Target Alt/Range", tostring(target_alt))

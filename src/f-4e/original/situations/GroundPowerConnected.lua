@@ -16,7 +16,9 @@ GroundPowerConnected:AddActivationConditions(RightGenSwitchExt():And(LeftGenSwit
 GroundPowerConnected:AddDeactivationConditions(Airborne.True:new())
 
 function GroundPowerConnected:OnActivation()
-	local task = Task:new():Click("WSO Ground Power Switch", "ON")
+	local task = Task:new()
+			:Wait( s(1.0), { hands = true })
+			:Click("WSO Ground Power Switch", "ON")
 			:Click("Nav Panel Function", "STBY")
 			:Wait( s(1.0), { hands = true })
 			:Click("INS Mode Knob", "STBY")

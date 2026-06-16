@@ -212,6 +212,7 @@ end)
 ListenTo("nav_enter_tgt_1_lat_long_text", "NavigationMenu", function(task, lat_long)
 	-- Lat/Long, H DD MM H DDD MM, N 12 34 E 123 45
 	if lat_long == nil then
+		Log("CantDo: Enter TGT 1 LAT/LON - No value given")
 		task:CantDo()
 		return
 	end
@@ -346,6 +347,7 @@ ListenTo("resume_next_wpt", "NavigationMenu", function( task )
 			end
 		end
 	end
+
 	task:CantDo()
 end)
 
@@ -489,6 +491,7 @@ ListenTo("resume_flightplan_1", "NavigationMenu", function( task, lat_long_wpt )
 		end
 	end
 	task:CantDo()
+	Log("CantDo: Resume FLP 1 - Waypoint not found")
 end)
 
 ListenTo("resume_flightplan_2", "NavigationMenu", function( task, lat_long_wpt )
@@ -554,6 +557,7 @@ ListenTo("resume_flightplan_2", "NavigationMenu", function( task, lat_long_wpt )
 		end
 	end
 	task:CantDo()
+	Log("CantDo: Resume FLP 2 - Waypoint not found")
 end)
 
 ListenTo("resume_backup_flightplan", "NavigationMenu", function(task, ftpln_str)
@@ -610,6 +614,7 @@ ListenTo("hold_curr_wpt", "NavigationMenu", function( task )
 	local memory = GetJester().memory
 	local flightplan = memory:GetActiveFlightPlan()
 	if not flightplan or not flightplan.waypoints or #flightplan.waypoints == 0 then
+		Log("CantDo: Hold Current WPT - No FLP or WPT found")
 		task:CantDo()
 		return
 	end
@@ -628,6 +633,7 @@ ListenTo("hold_curr_wpt", "NavigationMenu", function( task )
 		end
 	else
 		task:CantDo()
+		Log("CantDo: Hold Current WPT - No current WPT found")
 	end
 end)
 
@@ -750,6 +756,7 @@ ListenTo("edit_wpt_lat_long_text", "NavigationMenu", function( task, fltpln_wpt_
 		end
 	else
 		task:CantDo()
+		Log("CantDo: Edit WPT LAT/LON TEXT - Invalid data/format")
 	end
 
 end)
@@ -762,6 +769,7 @@ ListenTo("edit_wpt_lat_long", "NavigationMenu", function( task, fltpln_wpt_lat_l
 	local lon = tonumber(lonStr)
 
 	if fltpln_no == nil or wpt_no == nil or lat == nil or lon == nil then
+		Log("CantDo: Edit WPT LAT/LON - Invalid data/format")
 		task:CantDo()
 		return
 	end
@@ -782,6 +790,7 @@ ListenTo("edit_wpt_lat_long", "NavigationMenu", function( task, fltpln_wpt_lat_l
 			    :Say('misc/newturnpointsteering')
 		end
 	else
+		Log("CantDo: Edit WPT LAT/LON - Invalid data/format")
 		task:CantDo()
 	end
 
@@ -811,11 +820,11 @@ ListenTo("edit_wpt_fltpln", "NavigationMenu", function(task, fltpln_wpt_data)
 			UpdateFlightPlans()
 			Wheel.NavigateTo({ "Navigation", "Edit Flight Plan", memory:GetFlightplanNameString(fltpln_edit_no) })
 		else
-			print("Error: Unable to find waypoint to copy from.")
+			Log("CantDo: Edit WPT FLP - Unable to find waypoint to copy from")
 			task:CantDo()
 		end
 	else
-		print("Error: Invalid input for editing waypoint via flightplan data.")
+		Log("CantDo: Edit WPT FLP - Invalid input for editing waypoint via flightplan data")
 		task:CantDo()
 	end
 end)
@@ -865,6 +874,7 @@ ListenTo("add_wpt_after_lat_long_text", "NavigationMenu", function(task, fltpln_
 		UpdateFlightPlans()
 		Wheel.NavigateTo({ "Navigation", "Edit Flight Plan", memory:GetFlightplanNameString(fltpln_no) })
 	else
+		Log("CantDo: Add WPT after LAT/LON TEXT - Invalid data/format")
 		task:CantDo()
 	end
 end)
@@ -878,6 +888,7 @@ ListenTo("add_wpt_after_lat_long", "NavigationMenu", function(task, fltpln_wpt_l
 
 	local memory = GetJester().memory
 	if memory == nil or fltpln_no == nil or wpt_no == nil or lat == nil or lon == nil then
+		Log("CantDo: Add WPT after LAT/LON - Invalid data/format")
 		task:CantDo()
 		return
 	end
@@ -927,6 +938,7 @@ ListenTo("add_wpt_after_fltpln", "NavigationMenu", function(task, fltpln_wpt_cop
 		UpdateFlightPlans()
 		Wheel.NavigateTo({ "Navigation", "Edit Flight Plan", memory:GetFlightplanNameString(fltpln_to_edit_no) })
 	else
+		Log("CantDo: Add WPT after FLP - Unable to find the WPT to copy from")
 		task:CantDo()
 	end
 end)
@@ -977,6 +989,7 @@ ListenTo("add_wpt_before_lat_long_text", "NavigationMenu", function(task, fltpln
 		UpdateFlightPlans()
 		Wheel.NavigateTo({ "Navigation", "Edit Flight Plan", memory:GetFlightplanNameString(fltpln_no) })
 	else
+		Log("CantDo: Add WPT before LAT/LON TEXT - Invalid data/format")
 		task:CantDo()
 	end
 end)
@@ -990,6 +1003,7 @@ ListenTo("add_wpt_before_lat_long", "NavigationMenu", function(task, fltpln_wpt_
 
 	local memory = GetJester().memory
 	if memory == nil or fltpln_no == nil or wpt_no == nil or lat == nil or lon == nil then
+		Log("CantDo: Add WPT before LAT/LON - Invalid data/format")
 		task:CantDo()
 		return
 	end
@@ -1018,6 +1032,7 @@ ListenTo("add_wpt_before_fltpln", "NavigationMenu", function(task, fltpln_wpt_co
 		UpdateFlightPlans()
 		Wheel.NavigateTo({ "Navigation", "Edit Flight Plan", memory:GetFlightplanNameString(fltpln_to_edit_no) })
 	else
+		Log("CantDo: Add WPT before FLP - Unable to find WPT to copy from")
 		task:CantDo()
 	end
 end)
@@ -1025,6 +1040,7 @@ end)
 ListenTo("designate_wpt", "NavigationMenu", function(task, fltpln_wpt_type)
 	local fltpln_no_str, wpt_no, type = string.match(fltpln_wpt_type, "(%d+);(%d+);(.+)")
 	if not fltpln_no_str or not wpt_no or not Waypoint.SpecialTypes[type] then
+		Log("CantDo: Designate WPT - Invalid data format")
 		task:CantDo()
 		return
 	end
@@ -1036,7 +1052,8 @@ ListenTo("designate_wpt", "NavigationMenu", function(task, fltpln_wpt_type)
 	local waypoint_to_designate = memory:GetWaypoint(fltpln_no, wpt_no)
 	if waypoint_to_designate then
 		if type == "CAP" and waypoint_to_designate:GetSpecialWaypointType() == "CAP" then
-			task:CantDo() -- need to go back to default and select CAP again
+			Log("CantDo: Designate WPT - Cannot change directly from CAP to CAP")
+			task:CantDo()
 			return
 		end
 

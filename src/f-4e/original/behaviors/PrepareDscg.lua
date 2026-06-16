@@ -202,6 +202,7 @@ function PrepareDscg:PilotRequestsContextAction(task, type)
 
 	if action == nil then
 		GetJester():AddTask(Task:new():CantDo())
+		Log("CantDo: Execute ContextAction - Unknown Context")
 		return
 	end
 

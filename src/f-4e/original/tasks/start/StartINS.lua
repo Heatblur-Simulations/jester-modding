@@ -94,10 +94,17 @@ function StartINS:Constructor()
 			Dialog.Push(question)
 		end
 
+		local expired_option
+		if ins_stored then
+			expired_option = AlignStored
+		else
+			expired_option = AlignFull
+		end
+
 		ListenTo("full_alignment", "StartINS", AlignFull)
 		ListenTo("bath_alignment", "StartINS", AlignBath)
 		ListenTo("stored_alignment", "StartINS", AlignStored)
-		ListenTo("align_expired", "StartINS", AlignFullSilent)
+		ListenTo("align_expired", "StartINS", expired_option)
 	end
 
 	self:AddOnActivationCallback(on_activation)

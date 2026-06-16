@@ -206,6 +206,7 @@ end
 function PaveSpike.PilotRequestsLockUnlockTargetAhead(task)
     if not PaveSpike.IsReady() then
         task:CantDo()
+        Log("CantDo: Lock/Unlock Ground TGT - Pave Spike is not ready")
         return
     end
 

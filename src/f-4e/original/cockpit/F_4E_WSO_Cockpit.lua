@@ -82,7 +82,7 @@ function F_4E_WSO_Cockpit:AddGauges()
 			{
 				observation_name = 'ground_crew_external_power',
 				connector = Connector:new('PNT_WSO_GROUND_POWER_SWITCH'),
-				property = GetProperty('/Ground Crew/Ground Power Unit', 'Power Switch'),
+				property = GetProperty('/Ground Crew/Ground Power Unit', 'Powered'),
 				time_to_read = default_simple_gauge_time_to_read
 			})
 	self:AddGauge("Bus Power",
@@ -271,7 +271,7 @@ function F_4E_WSO_Cockpit:AddManipulators()
 	self:AddManipulator("APX-76 Test Challenge", {component_path = "/IFF Interrogator System/Test Challenge Switch"})
 
 	--WSO Instrument Ground Power Switch, DefaultSwitchEnum: ON, OFF
-	self:AddManipulator("WSO Ground Power Switch", {component_path = "/WSO Cockpit/CB Panel 2/Instrument Ground Power Switch"})
+	self:AddManipulator("WSO Ground Power Switch", {component_path = "/WSO Cockpit/CB Panel 2/Instrument Ground Power Switch/Solenoid Switch"})
 
 	--WSO WRCS Inputs
 	--Drag Coefficient Unitless (float) 0.0_f, 999.0_f

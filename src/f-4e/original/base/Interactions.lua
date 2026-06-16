@@ -30,6 +30,9 @@ end
 
 -- Jester Wheel UI
 -- The following functions are created from C++:
+-- Wheel.IsWheelReady()
+--   Use subsequent methods only after this returns true, otherwise calls are silently ignored.
+--   Alternatively, use ListenTo("is_wheel_ready", ...) instead.
 -- Wheel.ReplaceMainMenu(main_menu)
 -- Wheel.ReplaceSubMenu(sub_menu, menu_location)
 -- Wheel.AddItem(item, menu_location)

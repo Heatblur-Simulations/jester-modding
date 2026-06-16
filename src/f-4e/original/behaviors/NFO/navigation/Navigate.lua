@@ -467,8 +467,9 @@ local SetJesterCapTime = function(minutes, phraseKey)
 		local task = SayTask:new(phraseKey)
 		GetJester():AddTask(task)
 	else
-		local task = SayTask:new('misc/cantdo')
+		local task = Task:new():CantDo()
 		GetJester():AddTask(task)
+		Log("CantDo: set CAP Time - we are not navigating")
 	end
 end
 

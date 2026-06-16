@@ -124,6 +124,7 @@ local TuneManualFrequency = function(task, frequency_text)
     local frequency_num = tonumber(frequency_text)
 
     if frequency_num < 225000 or frequency_num > 399975 then
+        Log("CantDo: Tune Manual FREQ - Out of supported range")
         task:CantDo()
         return
     end
@@ -167,18 +168,21 @@ end)
 
 ListenTo("radio_manual_freq_text", "UhfRadioMenu", function(task, freq)
     if freq == nil then
+        Log("CantDo: Set Manual FREQ - No value given")
         task:CantDo()
         return
     end
     -- Removing any spaces from the input
     local cleanFreq = freq:gsub("%s+", "")
     if cleanFreq:match("%D") or #cleanFreq ~= 6 then
+        Log("CantDo: Set Manual FREQ - Value invalid format")
         task:CantDo()
         return
     end
     -- Ensuring the frequency is in the correct format
     local MHzPart, kHzPart = cleanFreq:match("(%d%d%d)(%d%d%d)")
     if MHzPart == nil or kHzPart == nil then
+        Log("CantDo: Set Manual FREQ - Value invalid format")
         task:CantDo()
         return
     end

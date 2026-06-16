@@ -18,6 +18,7 @@ function UserActions.LockDiveToss(task)
 
 	local ground_return_range = GetRadarMlcRange()
 	if not ground_return_range then
+		Log("CantDo: Lock DiveToss - No ground return range")
 		return task:CantDo()
 	end
 
@@ -41,6 +42,7 @@ function UserActions.ScanZone(task, range, altitude, is_relative)
 	is_relative = is_relative or false
 
 	if not State.is_active or not Api.IsPowered() then
+		Log("CantDo: Scan Radar zone - Radar is not active/powered")
 		task:CantDo()
 		return
 	end
@@ -65,12 +67,14 @@ end
 function UserActions.HighlightNextTarget(task)
 	task:SetPriority(1)
 	if not State.is_active or not Api.IsPowered() then
+		Log("CantDo: Highlight next Target - Radar is not active/powered")
 		task:CantDo()
 		return
 	end
 
 	local target = Api.GetNextBanditOrNil(State.target_to_highlight)
 	if not target then
+		Log("CantDo: Highlight next target - There is no other target")
 		task:CantDo()
 		return
 	end
@@ -96,6 +100,7 @@ function UserActions.FocusTarget(task, target_id)
 	local target = radar_targets[target_id] or State.all_targets[target_id]
 
 	if not State.is_active or not Api.IsPowered() or not target then
+		Log("CantDo: Focus Target - Radar is not active/powered or target unknown")
 		task:CantDo()
 		return
 	end
@@ -118,6 +123,7 @@ function UserActions.LockTarget(task, target_id)
 	local target = radar_targets[target_id] or State.all_targets[target_id]
 
 	if not State.is_active or not Api.IsPowered() or not target then
+		Log("CantDo: Lock Target - Radar is not active/powered or target is unknown")
 		task:CantDo()
 		return
 	end
@@ -162,6 +168,7 @@ function UserActions.LockUnlockBoresightOrDogfight(task)
 
 	if not Api.IsBoresightMode() and not Api.IsRegularCageMode() then
 		-- Cant lock in CAA mode
+		Log("CantDo: Lock/Unlock Dogfight - Cant lock in CAA, only in BST")
 		return task:CantDo()
 	end
 
@@ -172,6 +179,7 @@ end
 function UserActions.DisengageCage(task)
 	task:SetPriority(1)
 	if not Api.IsInDogfightMode() then
+		Log("CantDo: Disengage CAGE - Not in CAGE mode")
 		task:CantDo()
 		return
 	end
@@ -183,6 +191,7 @@ end
 function UserActions.LeaveBoresight(task)
 	task:SetPriority(1)
 	if not Api.IsBoresightMode() then
+		Log("CantDo: Leave Boresight - Not in BST mode")
 		task:CantDo()
 		return
 	end
@@ -194,6 +203,7 @@ end
 function UserActions.NextAspect(task)
 	task:SetPriority(1)
 	if not Api.IsBoresightMode() and not Api.IsRegularCageMode() then
+		Log("CantDo: Next Aspect - Not in BST mode")
 		task:CantDo()
 		return
 	end
@@ -340,6 +350,7 @@ end)
 ListenTo("radar_iff", "RadarUserActions", function(task, system)
 	State.SetEventTask(task)
 	if not State.is_active or not Api.IsPowered() then
+		Log("CantDo: IFF Challenge - Radar is not active/powered")
 		task:CantDo()
 		return
 	end
@@ -405,6 +416,7 @@ ListenTo("radar_enter_bst", "RadarUserActions", function(task)
 	local can_operate_radar = State.is_active and Api.IsPowered()
 	local is_regular_a2a_behavior = State.current_context_mode == Config.context_mode.A2A and not Api.IsInDogfightMode()
 	if not can_operate_radar or not is_regular_a2a_behavior or Api.IsInTrackState() then
+		Log("CantDo: Enter BST - Radar is not active/powered or not in A2A context or in Dogfight context or in TRACK mode")
 		task:CantDo()
 		return
 	end
@@ -419,11 +431,25 @@ ListenTo("radar_bst_aspect", "RadarUserActions", function(task, aspect)
 	State.SetEventTask(task)
 
 	if not Api.IsBoresightMode() and not Api.IsRegularCageMode() then
+		Log("CantDo: Set BST Aspect - Not in BST mode")
 		task:CantDo()
 		return
 	end
 
-	task:Roger()
+	local phrase = "radar/aspect"
+	if aspect == "nose" then
+		phrase = phrase .. "nose"
+	elseif aspect == "fwd" then
+		phrase = phrase .. "forward"
+	elseif aspect == "aft" then
+		phrase = phrase .. "aft"
+	elseif aspect == "tail" then
+		phrase = phrase .. "tail"
+	else
+		phrase = phrase .. "wide"
+	end
+
+	task:Say(phrase)
 	    :ClickFast("Radar Target Aspect", aspect)
 end)
 

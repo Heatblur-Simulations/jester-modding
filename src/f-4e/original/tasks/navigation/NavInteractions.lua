@@ -73,6 +73,8 @@ function NavInteractions.DivertWithTGT1(task, lat_long, silent)
 			return task
 		end
 	end
+
+	Log("CantDo: Divert TGT1 - LAT or LONG invalid")
 	if not silent then
 		task:CantDo()
 	end
