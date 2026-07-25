@@ -12,7 +12,17 @@ local SayAarDrifting = require('tasks.aar.SayAarDrifting')
 local SayAarSteering = require('tasks.aar.SayAarSteering')
 
 local fuel_system = '/Fuel System'
-local refuel_pos_kc_135 = Vector(coords.Body, 22, 0, -9, m) -- hardcoded for KC-135, eyeballed and fine-tuned from tracks
+
+local refuel_pos_boom_kc_135 = Vector(coords.Body, 22, 0, -9, m) -- hardcoded for KC-135, eyeballed and fine-tuned from tracks
+local refuel_pos_basket_kc_130_left = Vector(coords.Body, -28.338, -13.884, 3.153, m) -- from its lua, "refueling_points"
+local refuel_pos_basket_kc_130_right = Vector(coords.Body, -28.338, 13.913, 3.153, m) -- from its lua, "refueling_points"
+local refuel_pos_basket_kc_135mprs_left = Vector(coords.Body, -34.535, -18.837, -4.026, m) -- from its lua, "refueling_points"
+local refuel_pos_basket_kc_135mprs_right = Vector(coords.Body, -34.535, 18.837, -4.026, m) -- from its lua, "refueling_points"
+local refuel_pos_basket_c130j30_left = Vector(coords.Body, -28.338, -13.884, -3.153, m) -- from its lua, "refueling_points"
+local refuel_pos_basket_c130j30_right = Vector(coords.Body, -28.338, 13.913, -3.153, m) -- from its lua, "refueling_points"
+local refuel_pos_basket_s3b = Vector(coords.Body, -16.04, -3.86, -1.7497, m) -- from its lua, "refueling_points"
+local refuel_pos_basket_a6e = Vector(coords.Body, -19.308, 0.0, -2.347, m) -- from its lua, "refueling_points"
+
 local refueling_green_zone = ft(6) -- see https://i.imgur.com/a5PGZsZ.png, tweaked a bit for DCS
 local refueling_green_zone_good = ft(3)
 local connected_cues_after = s(5)
@@ -50,11 +60,27 @@ local GetRefuelPosError = function()
 	if tanker == nil then
 		return nil
 	end
-	if tanker.type ~= 'KC-135' and tanker.type ~= 'KC135MPRS' then
-		-- If another boom-tanker is added, adjust this condition and figure out the correct refuel_pos (see 'refuel_pos_kc_135')
-		return nil
+
+	local refuel_pos
+	if tanker.type == 'KC-135' then
+		refuel_pos = refuel_pos_boom_kc_135
+	elseif tanker.type == 'KC130' then
+		refuel_pos = refuel_pos_basket_kc_130_left
+	elseif tanker.type == 'KC-135MPRS' then
+		refuel_pos = refuel_pos_basket_kc_135mprs_left
+	elseif tanker.type == 'C-130J-30' then
+		refuel_pos = refuel_pos_basket_c130j30_left
+	elseif tanker.type == 'S-3B Tanker' then
+		refuel_pos = refuel_pos_basket_s3b
+	elseif tanker.type == 'A6E' then
+		refuel_pos = refuel_pos_basket_a6e
+	else
+		refuel_pos = refuel_pos_boom_kc_135
 	end
-	return tanker.position_body - refuel_pos_kc_135
+
+	-- TODO Figure out when to use left/right refuel pos
+
+	return tanker.position_body - refuel_pos_boom_kc_135
 end
 
 local IsTooCloseToTanker = function(refuel_pos_error)
