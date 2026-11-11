@@ -1,0 +1,18 @@
+JESTER A/A+ 1.0 - INSTALL IN 3 STEPS (about 2 minutes). Close DCS first.
+
+1. Open Saved Games\DCS_F4E\jester\mods (create the folders if they do not exist).
+   Drag the folders "aaplus" and "init" from this download into it.
+   When Windows asks, choose "Copy and Replace". It only adds A/A+ files; nothing of yours is deleted.
+
+2. Open Saved Games\DCS_F4E\jester\mods\aaplus\Config.lua in Notepad and set Config.SAVED_GAMES (the line marked
+   "PATH TO EDIT") to your Saved Games folder, for example C:\Users\Pat\Saved Games. Save.
+
+3. Start DCS.
+
+OPTIONAL - AWACS / BRAA / EWRS cues: drag the folder Scripts from "_EXTRA (DCS Scripts)" into Saved Games\DCS too
+(open beta users: Saved Games\DCS.openbeta). AWACS cues also need io access for Jester's Lua; INSTALL.md explains
+the security trade-off before you choose.
+
+UPDATING: copy your Config.lua somewhere safe, drag the folder in again (Copy and Replace), put your Config.lua back.
+REMOVING: delete Saved Games\DCS_F4E\jester\mods\init\aaplus.
+The user guide is the PDF in this folder. INSTALL.md has the details and troubleshooting.
