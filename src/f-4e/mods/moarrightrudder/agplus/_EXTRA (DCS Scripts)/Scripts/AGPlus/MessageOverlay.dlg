@@ -1,0 +1,179 @@
+dialog = {
+    ["children"] = {
+        ["Box"] = {
+            ["children"] = {
+            },
+            ["params"] = {
+                ["bounds"] = {
+                    [1] = {
+                        ["h"] = 120,
+                        ["w"] = 760,
+                        ["x"] = 0,
+                        ["y"] = 0,
+                    },
+                },
+                ["enabled"] = true,
+                ["text"] = "",
+                ["tooltip"] = "",
+                ["visible"] = true,
+                ["zindex"] = 0,
+            },
+            ["skin"] = {
+                ["params"] = {
+                    ["name"] = "panelSkin",
+                },
+            },
+            ["type"] = "Panel",
+        },
+        ["pNoVisible"] = {
+            ["children"] = {
+                ["eText"] = {
+                    ["params"] = {
+                        ["bounds"] = {
+                            ["h"] = 22,
+                            ["w"] = 700,
+                            ["x"] = 6,
+                            ["y"] = 6,
+                        },
+                        ["enabled"] = true,
+                        ["text"] = "text",
+                        ["tooltip"] = "",
+                        ["visible"] = true,
+                        ["zindex"] = 0,
+                    },
+                    ["skin"] = {
+                        ["params"] = {
+                            ["name"] = "staticSkin",
+                            ["textWrapping"] = false,
+                        },
+                        ["states"] = {
+                            ["released"] = {
+                                [1] = {
+                                    ["text"] = {
+                                        ["color"] = "0xffffffff",
+                                        ["font"] = "DejaVuLGCSansCondensed-Bold.ttf",
+                                        ["lineHeight"] = 14,
+                                    },
+                                },
+                            },
+                        },
+                    },
+                    ["type"] = "Static",
+                },
+                ["eClear"] = {
+                    ["params"] = {
+                        ["bounds"] = {
+                            ["h"] = 36,
+                            ["w"] = 40,
+                            ["x"] = 60,
+                            ["y"] = 60,
+                        },
+                        ["enabled"] = true,
+                        ["text"] = "clear",
+                        ["tooltip"] = "",
+                        ["visible"] = true,
+                        ["zindex"] = 0,
+                    },
+                    ["skin"] = {
+                        ["params"] = {
+                            ["name"] = "panelSkin",
+                        },
+                        ["states"] = {
+                            ["released"] = {
+                                [1] = {
+                                    ["bkg"] = {
+                                        ["center_center"] = "0x00000000",
+                                    },
+                                },
+                            },
+                        },
+                    },
+                    ["type"] = "Panel",
+                },
+                ["eBox"] = {
+                    ["params"] = {
+                        ["bounds"] = {
+                            ["h"] = 36,
+                            ["w"] = 40,
+                            ["x"] = 13,
+                            ["y"] = 60,
+                        },
+                        ["enabled"] = true,
+                        ["text"] = "box",
+                        ["tooltip"] = "",
+                        ["visible"] = true,
+                        ["zindex"] = 0,
+                    },
+                    ["skin"] = {
+                        ["params"] = {
+                            ["name"] = "panelSkin",
+                        },
+                        ["states"] = {
+                            ["released"] = {
+                                [1] = {
+                                    ["bkg"] = {
+                                        ["center_center"] = "0x000000b4",
+                                    },
+                                },
+                            },
+                        },
+                    },
+                    ["type"] = "Panel",
+                },
+            },
+            ["params"] = {
+                ["bounds"] = {
+                    ["h"] = 100,
+                    ["w"] = 100,
+                    ["x"] = 800,
+                    ["y"] = 31,
+                },
+                ["enabled"] = true,
+                ["text"] = "panel0",
+                ["tooltip"] = "",
+                ["visible"] = false,
+                ["zindex"] = 0,
+            },
+            ["skin"] = {
+                ["params"] = {
+                    ["name"] = "panelSkin",
+                },
+            },
+            ["type"] = "Panel",
+        },
+    },
+    ["params"] = {
+        ["bounds"] = {
+            [1] = {
+                ["h"] = 120,
+                ["w"] = 760,
+                ["x"] = 0,
+                ["y"] = 0,
+            },
+        },
+        ["draggable"] = false,
+        ["enabled"] = true,
+        ["hasCursor"] = false,
+        ["lockFlow"] = false,
+        ["modal"] = false,
+        ["offscreen"] = false,
+        ["resizable"] = false,
+        ["zOrder"] = 120,
+        ["text"] = "Jester A/G Plus messages",
+    },
+    ["skin"] = {
+        ["params"] = {
+            ["name"] = "windowSkin",
+        },
+        ["states"] = {
+            ["released"] = {
+                [1] = {
+                    ["bkg"] = {
+                        ["center_center"] = "0x00000000",
+                    },
+                },
+            },
+        },
+    },
+    ["type"] = "Window",
+}
