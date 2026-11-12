@@ -1,0 +1,28 @@
+JESTER A/G+ 1.0.0 - INSTALL IN 5 STEPS (about 5 minutes). Close DCS first.
+"Saved Games" is the folder that contains DCS (or DCS.openbeta) and DCS_F4E.
+
+1. Open Saved Games\DCS_F4E\jester\mods (create the mods folder if it is missing).
+   Drag the folders agplus and init from this download into it.
+   When Windows asks, choose "Copy and Replace". It only adds A/G+ files; nothing of yours is deleted.
+
+2. Open the folder "_EXTRA (DCS Scripts)" and drag the folder Scripts into Saved Games\DCS
+   (Saved Games\DCS.openbeta for open beta). Choose "Copy and Replace".
+
+3. Export.lua. Open the folder "Export.lua" inside "_EXTRA (DCS Scripts)".
+   - No Saved Games\DCS\Scripts\Export.lua yet: drag and drop the Export.lua from there into Saved Games\DCS\Scripts.
+   - You already have one: do NOT replace it. Open yours in Notepad and paste this one line at the very end, on a new line. Save.
+       pcall(function() local l=require("lfs"); dofile(l.writedir()..[[Scripts\AGPlus\AGPlusLoad.lua]]) end)
+
+4. Open Saved Games\DCS_F4E\jester\mods\agplus\Config.lua in Notepad and set the three paths at the top:
+     SAVED_GAMES       your Saved Games folder, for example C:\Users\Pat\Saved Games
+     DCS_SAVED_FOLDER  'DCS' or 'DCS.openbeta'
+     DCS_INSTALL       your DCS World install folder
+   Save it.
+
+5. Start DCS. (A full restart; a mission restart is not enough.)
+
+CHECK: start an F-4E mission, wait ten seconds, open the Jester wheel: Air To Ground > A/G Plus. The center text names your weapons.
+
+UPDATING: drag agplus, init and Scripts in again and choose Replace, but first copy your Config.lua somewhere safe and put it back afterwards.
+REMOVING: delete Saved Games\DCS_F4E\jester\mods\init\agplus, and the A/G+ line from Export.lua.
+More detail and troubleshooting: INSTALL.md.

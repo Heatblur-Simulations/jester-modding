@@ -1,0 +1,11 @@
+Saved Games\DCS\Scripts\Export.lua is the one file that is not drag-and-drop, because other programs (Tacview, SRS, DCS-BIOS) use it too.
+
+ * You have NO Export.lua in Saved Games\DCS\Scripts:
+     copy the Export.lua next to this note into Saved Games\DCS\Scripts. Done.
+
+ * You HAVE an Export.lua:
+     open it in Notepad, go to the very end, and paste this one line on a new line. Save. Do not delete anything else.
+
+pcall(function() local l=require("lfs"); dofile(l.writedir()..[[Scripts\AGPlus\AGPlusLoad.lua]]) end)
+
+(If you already added the three older A/G+ lines, delete them and use this one line instead.)
