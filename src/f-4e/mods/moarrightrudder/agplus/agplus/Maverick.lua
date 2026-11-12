@@ -2179,7 +2179,10 @@ function Maverick.OnPress(task, kind)
             end
             return
         end
-        local picking_cage = st.job and st.job.cage_only and st.pick
+        -- A cage that is already running (the one at the end of a search, Cage Seeker, the pilot's cage finish) is not stopped by this press: the list
+        -- opens on top of it and the slew follows when the cage ends. Stopping it started a second cage from an unknown position (7.5 s) on top of the
+        -- first, so the first slew after a search took 12 s or more (Nov 11 2026).
+        local picking_cage = st.job and st.job.cage_only
         if st.job and not picking_cage then
             stop_job(st.job.tracking and 'Slew Ended By A Press' or 'Slew Canceled', true)
         end
@@ -2661,9 +2664,23 @@ local function watch_tick()
                     -- D/G (user, Oct 21 2026): full trigger with ARR held = FOV change; without ARR it is a re-cage, unless the seeker is already caged. The full trigger action cages the seeker, but on a seeker that is caged or on its way back to the cage, or while the
                     -- hand control half press is held (Jester's slew), the same press switches wide / narrow instead.
                     local job = st.job
+                    -- The launch is only seen in the count about once a second: a press just after a held release on a capped, still-counted
+                    -- missile is the cap press of the NEXT missile, not a FOV change (Nov 12 2026).
+                    local live = 0
+                    for _, m in ipairs(Maverick.Loadout()) do live = live + (m.count or 0) end      -- read now, not the once-a-second count
+                    local launched = (watch.count and live < watch.count)
+                        or (st.rel_long_t and now - st.rel_long_t < 4 and (st.launch_seen or 0) < st.rel_long_t)
+                        or (watch.rel_t0 and now - watch.rel_t0 >= 0.6)      -- the pickle is still held: the missile has gone or is going
+                    if st.dome_open and launched then
+                        st.dome_open, st.fov, st.arr_tap = false, 1, nil
+                        st.early_skip_t = now
+                        st.advance_pending = true
+                        AGLog.Info('mav: pilot trigger just after a launch, before the count dropped: counted as the cap press of the next missile')
+                    end
                     local first_press = not st.dome_open
                     st.dome_open = true
                     local advanced = first_press and cap_popped('pilot')
+                    if first_press then st.arr_tap = nil end      -- the cap press is the first of a new missile; an ARR tap before it belonged to the last one
                     if first_press and not watch.aar then
                         -- The very first full trigger action on a Maverick that has not been uncaged yet removes the dome and uncages it, and does not
                         -- switch the FOV (user, Oct 22 2026: the FOV menu flipped to Wide on that press while the seeker stayed Narrow).
@@ -2709,6 +2726,8 @@ local function watch_tick()
         watch.ready = ready
         if watch.count and n < watch.count then
             st.fresh, st.pos, st.rel = true, nil, nil
+            st.launch_seen = st.rel_long_t or now
+            st.arr_tap = nil      -- a new missile has no ARR tap behind it: a stale flag made the next D/G trigger press a re-cage instead of the FOV change (Nov 11 2026)
             AGLog.Info('mav: rifle (Mavericks %d -> %d), the next seeker is caged', watch.count, n)
             -- The last missile of a station leaves the loadout list (count 0), so the per-station drop below never sees it: the total confirms the launch too.
             if (st.rel_long_t and now - st.rel_long_t < 12) or (watch.rel_t0 and now - watch.rel_t0 >= (Config.MAV_LAUNCH_HOLD_S or 1.2)) then
@@ -2729,7 +2748,8 @@ local function watch_tick()
                 st.stn[m.station] = rec
             elseif (m.count or 0) < rec.count then
                 rec.dome, rec.fov = false, 1
-                if m.station == st.cur_stn then st.dome_open, st.fov = false, 1 end
+                if m.station == st.cur_stn and not (st.early_skip_t and now - st.early_skip_t < 5) then st.dome_open, st.fov, st.arr_tap = false, 1, nil end
+                st.launch_seen = st.rel_long_t or now
                 AGLog.Info('mav: station %s fired (%d -> %d), the next missile there is fresh: cap on, FOV Wide', tostring(m.station), rec.count, m.count or 0)
                 st.fov_dirty = true
                 if (st.rel_long_t and now - st.rel_long_t < 12) or (watch.rel_t0 and now - watch.rel_t0 >= (Config.MAV_LAUNCH_HOLD_S or 1.2)) then
