@@ -4,6 +4,8 @@ Versions follow major.minor.patch. The version is in `agplus\Config.lua` (`Confi
 
 ## Unreleased (Oct 27 2026)
 
+- INS Fix By Bearing: the range limit is now 150 NM (`INS_BEARING_MAX_RANGE_NM`, it was 20 NM). A station more than 30 NM away (`INS_BEARING_WARN_NM`) needs a confirming press. The first press shows the station, its distance and the expected error (the range divided by 60 NM on average, three times that at worst) and changes nothing in the cockpit. A second press within 15 s (`INS_BEARING_CONFIRM_S`) starts the fix. After that time the request is canceled.
+- INS Update: when no station is in range, a message on the screen names the nearest station, its distance and the limit. Before this, the reason was only in `agplus.log`.
 - Ships: the unit feed now includes Export class 3 (navy), and the search lists them under a new **Ships** category. Before this, ships never reached the search in single player or multiplayer.
 - Multiplayer menu stalls: the A/G Plus menu rebuild is limited to one per 1.5 s (`MENU_REBUILD_GAP_S`); the many rebuilds a search used to ask for, one per spotted unit, fold into one. A rebuild that takes 15 ms or more is logged to `agplus.log` with the target count (`MENU_REBUILD_LOG_MS`).
 - Statics in multiplayer: a client cannot reach the server scripting, so statics cannot be listed there. The hook stops asking after three failed tries and says so in `dcs.log`.
