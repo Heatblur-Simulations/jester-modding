@@ -1,0 +1,24 @@
+JESTER SURVIVABILITY 1.0 - INSTALL IN 3 STEPS (about 2 minutes). Close DCS first.
+
+1. Open Saved Games\DCS_F4E\jester\mods (create the folders if they do not exist).
+   Drag the folders "survivability" and "init" from this download into it.
+   When Windows asks, choose "Copy and Replace". It only adds Survivability files; nothing of yours is deleted.
+
+2. Open Saved Games\DCS_F4E\jester\mods\survivability\Config.lua in Notepad and set Config.SAVED_GAMES (the line marked
+   "PATH TO EDIT") to your Saved Games folder, for example C:\Users\Pat\Saved Games. Save.
+
+3. Start DCS.
+
+This covers IR missiles and visible SAMs.
+
+OPTIONAL - radar-guided missiles (AIM-7, R-27R and similar) need the object feed:
+ a) Drag the folder Scripts from "_EXTRA (DCS Scripts)" into Saved Games\DCS (open beta users: Saved Games\DCS.openbeta).
+ b) Add this one line at the END of Saved Games\DCS\Scripts\Export.lua (create the file if there is none; do not replace an
+    existing one):
+      pcall(function() local l=require("lfs"); dofile(l.writedir()..[[Scripts\SurvFeed.lua]]) end)
+ c) Jester's Lua also needs io access to read the feed; INSTALL.md explains the security trade-off before you choose.
+ d) Restart DCS.
+
+UPDATING: copy your Config.lua somewhere safe, drag the folder in again (Copy and Replace), put your Config.lua back.
+REMOVING: delete Saved Games\DCS_F4E\jester\mods\init\survivability.
+The user guide is the PDF in this folder. INSTALL.md has the details and troubleshooting.
