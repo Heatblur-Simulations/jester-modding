@@ -29,6 +29,5 @@ Check: start an F-4E mission, wait ten seconds and open the Jester wheel: Air To
   - DIRECT + TV with Jester Maverick on: search where you look.
 - **Jester Maverick:** slews the A, B, D and G seekers to Strike List targets, searches, tracks per-missile cap and FOV, advances to the next target after a launch.
 - **Pave Spike:** look-there, area search, hold, target list. Destroyed targets drop out of the lists by themselves.
-- **INS update from TACAN (Navigation > INS Update):** Overfly TACAN uses a station up to 120 NM away. Fix By Bearing uses a station up to 150 NM away. A TACAN bearing is good to about 1 degree, which is about 0.5 NM at 30 NM. Beyond 30 NM, Fix By Bearing shows the expected error and needs a second press within 15 seconds to confirm.
 
 Thank you to Heatblur for making outstanding DCS modules, and for making the F-4 Jester API available to the community.

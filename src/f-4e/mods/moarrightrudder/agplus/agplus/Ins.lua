@@ -331,7 +331,7 @@ function Ins.Measure(want)
     if not best or best.shift > 2.5 then
         return nil, 'no TACAN match (' .. table.concat(seen, ' | ') .. ', compass ' .. (hdg and string.format('%.1f', hdg) or 'nil') .. ')'
     end
-    if best.rng > (Config.INS_BEARING_MAX_RANGE_NM or 150) then return nil, string.format('TACAN too far for a bearing fix (%.0f NM)', best.rng) end
+    if best.rng > (Config.INS_BEARING_MAX_RANGE_NM or 20) then return nil, string.format('TACAN too far for a bearing fix (%.0f NM)', best.rng) end
     best.ins_lat, best.ins_lon = ilat, ilon
     return best
 end

@@ -15,7 +15,6 @@ local Config = require('agplus.Config')
 local AGLog = require('agplus.Log')
 local Util = require('agplus.Util')
 local Ins = require('agplus.Ins')
-local Dbg = require('agplus.PaveDebug')
 
 local Update = {}
 
@@ -163,46 +162,14 @@ function UpdateBehavior:Start(task, mode)
     if not list then return false, 'no beacon list (check Config.DCS_INSTALL)' end
     -- A bearing is good to a degree or so, which is 0.3 NM at 20 NM and 1.7 NM at 100 NM, so the bearing fix only uses near
     -- stations; the overfly can use any (the range alone is accurate).
-    local max = (mode == 'overfly') and (Config.INS_MAX_RANGE_NM or 120) or (Config.INS_BEARING_MAX_RANGE_NM or 150)
+    local max = (mode == 'overfly') and (Config.INS_MAX_RANGE_NM or 120) or (Config.INS_BEARING_MAX_RANGE_NM or 20)
     local cands = {}
     for _, r in ipairs(Ins.Nearest(list, ilat, ilon, mode == 'overfly' and 1 or 3)) do
         if r.d <= max + 2 then cands[#cands + 1] = r.b end
     end
     if #cands == 0 then
         local n = Ins.Nearest(list, ilat, ilon, 1)[1]
-        -- The player sees why Jester cannot do it (Nov 12 2026): before this only the log said so, and Jester just said "can't do".
-        Dbg.Notice(n and string.format('INS Update: no TACAN station within %d NM, nearest is %s at %.0f NM%s', max, tostring(n.b.name), n.d,
-            (mode == 'overfly' or (Config.INS_MAX_RANGE_NM or 120) <= max) and '' or ' (Overfly TACAN works up to ' .. (Config.INS_MAX_RANGE_NM or 120) .. ' NM)')
-            or 'INS Update: no TACAN station in the map list', 7)
         return false, n and string.format('no TACAN station within range; nearest is %s ch%d at %.1f NM, limit %d NM', n.b.name, n.b.channel, n.d, max) or 'no TACAN station within range'
-    end
-
-    -- A bearing fix from a station beyond Config.INS_BEARING_WARN_NM needs a second press (Nov 12 2026). The first press only shows the
-    -- expected error and starts a timer; nothing in the cockpit is touched, so there is nothing to put back when the timer runs out.
-    local confirmed = false
-    if mode == 'bearing' then
-        local d1 = Ins.Distance(ilat, ilon, cands[1].lat, cands[1].lon)
-        local warn = Config.INS_BEARING_WARN_NM or 30
-        local now = Util.Now()
-        local p = self.pending
-        if d1 > warn then
-            if p and now <= p.expires and p.name == cands[1].name then
-                confirmed = true
-                self.pending = nil
-                AGLog.Info('ins update: far station confirmed: %s at %.0f NM', tostring(cands[1].name), d1)
-            else
-                local secs = Config.INS_BEARING_CONFIRM_S or 15
-                self.pending = { expires = now + secs, name = cands[1].name }
-                Dbg.Notice(string.format('INS Fix By Bearing: %s at %.0f NM, expect about %.1f NM error, up to %.1f NM. Press Fix By Bearing again within %d s to confirm',
-                    tostring(cands[1].name), d1, d1 / 60, d1 / 20, secs), math.min(secs, 10))
-                AGLog.Info('ins update: far station %s at %.0f NM, waiting for a confirming press for %d s', tostring(cands[1].name), d1, secs)
-                return 'confirm'
-            end
-        else
-            self.pending = nil
-        end
-    else
-        self.pending = nil
     end
 
     local alt_ft
@@ -214,7 +181,7 @@ function UpdateBehavior:Start(task, mode)
     orig.holder = holder()
     orig.bdhi = manip_state('BDHI Mode')
     if orig.bdhi ~= 'NAV_COMP' and orig.bdhi ~= 'VOR_TAC' and orig.bdhi ~= 'UHF_ADF_TACAN' then orig.bdhi = nil end
-    self.job = { cands = cands, idx = 1, orig = orig, ok = false, mode = mode, confirmed = confirmed }
+    self.job = { cands = cands, idx = 1, orig = orig, ok = false, mode = mode }
     AGLog.Info('ins update: start (%s). holder=%s head ch=%s band=%s fn=%s BDHI=%s | trying %s ch%d%s', mode, tostring(orig.holder),
         tostring(orig.ch), tostring(orig.band), tostring(orig.fn), tostring(orig.bdhi), cands[1].name, cands[1].channel, cands[1].band or 'X')
     if orig.holder ~= 'wso' then press('TACAN_RIO_COMMAND') end
@@ -256,11 +223,6 @@ function UpdateBehavior:TimedFix(m, vx, vy)
 end
 
 function UpdateBehavior:Fix(m)
-    -- A far station gives a less exact fix (Nov 12 2026): the bearing is good to about 1 degree (range / 60 NM sideways), 3 degrees at worst.
-    if m.src ~= 'overfly' and not (self.job and self.job.confirmed) and m.rng and m.rng > (Config.INS_BEARING_WARN_NM or 30) then
-        Dbg.Notice(string.format('INS Fix By Bearing: %s at %.0f NM, expect about %.1f NM error, up to %.1f NM', tostring(m.b.name), m.rng, m.rng / 60, m.rng / 20), 8)
-        AGLog.Info('ins update: far station warning: %s at %.0f NM, expected error %.1f NM, worst %.1f NM', tostring(m.b.name), m.rng, m.rng / 60, m.rng / 20)
-    end
     if m.src ~= 'overfly' then
         local vx, vy = Ins.GroundVelocity()
         if vx and (vx * vx + vy * vy) > 2500 then return self:TimedFix(m, vx, vy) end
@@ -445,11 +407,6 @@ end
 
 function UpdateBehavior:Tick()
     release_held()
-    if self.pending and Util.Now() > self.pending.expires then
-        AGLog.Info('ins update: no confirming press for %s, the far station fix is canceled', tostring(self.pending.name))
-        Dbg.Notice('INS Fix By Bearing: not confirmed, canceled', 4)
-        self.pending = nil
-    end
     if self.state == 'overfly' and Util.Cockpit() then self:Overfly() return end
     if self.state == 'timedfix' and Util.Cockpit() then
         local now = Util.Now()
@@ -601,7 +558,6 @@ local function start_update(task, mode)
     end
     local ok, started, why = pcall(b.Start, b, task, mode)
     if not ok then AGLog.Info('ins update: error %s', tostring(started)) task:CantDo() return end
-    if started == 'confirm' then task:Roger() return end      -- first press of a far bearing fix: waiting for the confirming press
     if not started then AGLog.Info('ins update: not started (%s)', tostring(why)) task:CantDo() return end
     task:Roger()
 end

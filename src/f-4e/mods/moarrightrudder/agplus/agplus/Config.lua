@@ -35,14 +35,8 @@ Config.FRONT_TACAN_POSITIONS = { 0, 1, 2 }
 
 -- INS update: seconds Jester waits for a TACAN reading from each station before trying the next.
 Config.INS_LOCK_TIMEOUT_S = 12
--- INS Fix By Bearing only uses stations nearer than this (NM). A bearing is good to about a degree (1 NM sideways at 60 NM, the rule of 60).
-Config.INS_BEARING_MAX_RANGE_NM = 150
--- Beyond this range (NM) Jester shows a message with the expected error before the fix goes in: range / 60 NM on average (1 degree) and
--- three times that at worst (3 degrees, the largest residual seen in testing). 30 NM = 0.5 NM on average.
-Config.INS_BEARING_WARN_NM = 30
--- Beyond that range the first press of Fix By Bearing only shows the expected error. A second press within this many seconds starts the fix;
--- when the time runs out the request is canceled (nothing has been changed in the cockpit).
-Config.INS_BEARING_CONFIRM_S = 15
+-- INS Fix By Bearing only uses stations nearer than this (NM); a bearing is good to about a degree.
+Config.INS_BEARING_MAX_RANGE_NM = 20
 -- INS update (overfly): give up and put everything back after this many seconds without an overfly.
 Config.INS_OVERFLY_TIMEOUT_S = 600
 
