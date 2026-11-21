@@ -107,8 +107,9 @@ end
 
 -- Every change keeps the wheel open: the menu is rebuilt and the wheel is sent back to the Strike List page (see refresh), so a player
 -- can fill and order the list without backing out to the root menu each time. Go To closes it, the pod is on its way.
+local ACT = 'agp_strike'      -- 'agp_root_strike' while the root wheel menu's copy is built (RootMenu.lua forwards it to agp_strike)
 local function leaf(name, value, reaction)
-    return Wheel.Item:new({ name = name, action = 'agp_strike', action_value = value, reaction = reaction or Wheel.Reaction.NOTHING })
+    return Wheel.Item:new({ name = name, action = ACT, action_value = value, reaction = reaction or Wheel.Reaction.NOTHING })
 end
 
 -- Picking a target from the pod's list for one slot: categories, then the units, paged like the Pave Spike Targets menu.
@@ -170,14 +171,14 @@ local function slot_item(i)
     return Wheel.Item:new({ name = name, menu = Wheel.Menu:new({ name = name, items = items }) })
 end
 
-function Targets.BuildItem()
+local function build_strike_item()
     local items = {}
     for i = 1, N do items[#items + 1] = slot_item(i) end
     -- Full Target List (Oct 22 2026) takes the place of Add Current Target on the ring: every category with its units, Refresh Target Data and
     -- Purge Targets (built in PaveSearch.lua). Add Current Target moved into Manage.
     local S = Search()
     if S and S.BuildFullListItem then
-        local ok, full = pcall(S.BuildFullListItem)
+        local ok, full = pcall(S.BuildFullListItem, ACT == 'agp_root_strike')
         if ok and full then items[#items + 1] = full end
     end
     items[#items + 1] = Wheel.Item:new({
@@ -195,6 +196,15 @@ function Targets.BuildItem()
         }),
     })
     return Wheel.Item:new({ name = TOP, menu = Wheel.Menu:new({ name = TOP, items = items }) })
+end
+
+-- root = true builds the copy for the root wheel menu (its items send agp_root_strike, so the wheel goes back to that menu after a change).
+function Targets.BuildItem(root)
+    ACT = root and 'agp_root_strike' or 'agp_strike'
+    local ok, item = pcall(build_strike_item)
+    ACT = 'agp_strike'
+    if not ok then error(item) end
+    return item
 end
 
 local function info_text()
@@ -219,7 +229,7 @@ local function refresh(nav)
     -- The rebuild can drop the wheel back to the root: send it to the Strike List page again. Config.STRIKE_WHEEL_NAV = false switches this off.
     if Config.STRIKE_WHEEL_NAV ~= false and nav then
         AGLog.Info('strike: wheel sent back to the Strike List page')
-        pcall(Wheel.NavigateTo, { Config.MENU_PARENT[1], Config.MENU_NAME, TOP })
+        pcall(Wheel.NavigateTo, Menu.NavPath(TOP))
     end
 end
 

@@ -6,6 +6,7 @@ local Class = require('base.Class')
 local Behavior = require('base.Behavior')
 local Config = require('agplus.Config')
 local AGLog = require('agplus.Log')
+local Util = require('agplus.Util')
 
 local Menu = {}
 
@@ -74,6 +75,36 @@ local function build_top()
     })
 end
 
+-- The whole A/G Plus item, for the "A/G Plus" link inside the root wheel menus (RootMenu.lua).
+function Menu.BuildTop()
+    return build_top()
+end
+
+-- Where the wheel goes back to after a change. A click on an item of the root wheel menu (RootMenu.lua) sets root_click, and for the
+-- next 2.5 s the wheel is sent back to that menu; any other click sends it to the A/G Plus page as before.
+-- name = the page's name; is_root_page = the page is the root item itself (the Maverick quick menu), not a menu inside it.
+Menu.root_click = nil      -- { name = root item name, t = mission time }
+function Menu.NavPath(name, is_root_page)
+    local rc = Menu.root_click
+    if rc and rc.name and Util.Now() - rc.t < 2.5 then
+        if is_root_page then return { rc.name } end
+        return { rc.name, name }
+    end
+    return { Config.MENU_PARENT[1], Config.MENU_NAME, name }
+end
+
+-- The same for a full path that starts with the A/G Plus item, for example { 'Air To Ground', 'A/G Plus', 'Strike List', 'Full Target List' }:
+-- after a click on the root menu the first two entries are replaced by the root item.
+function Menu.NavFrom(path)
+    local rc = Menu.root_click
+    if rc and rc.name and Util.Now() - rc.t < 2.5 then
+        local out = { rc.name }
+        for i = 3, #path do out[#out + 1] = path[i] end
+        return out
+    end
+    return path
+end
+
 -- Fresh registration: used right after a (re)spawn.
 function Menu.Register()
     info_cache = {}
@@ -82,6 +113,7 @@ function Menu.Register()
     Menu.registered = ok and true or false
     if not ok then AGLog.Info('menu: AddItem failed: %s', tostring(err)) end
     register_roots(false)
+    if Menu.AfterRegister then pcall(Menu.AfterRegister) end
 end
 
 -- In-place update: the item keeps its slot. Does nothing until the menu has been registered.
@@ -91,6 +123,7 @@ function Menu.Rebuild()
     local ok, err = pcall(function() Wheel.ReplaceItem(build_top(), Config.MENU_NAME, Config.MENU_PARENT) end)
     if not ok then AGLog.Info('menu: ReplaceItem failed: %s', tostring(err)) end
     register_roots(true)
+    if Menu.AfterRebuild then pcall(Menu.AfterRebuild) end
 end
 
 -- Center text of a menu inside A/G+. tail is the path below A/G+, for example { "Weapon", "GP Bombs" }.
