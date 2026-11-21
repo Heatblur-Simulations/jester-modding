@@ -61,6 +61,12 @@ Config.MENU_NAME = "A/G Plus"
 -- Ticks to wait after a (re)spawn before registering the menu a second time.
 Config.MENU_SETTLE_TICKS = 25
 
+-- Root wheel: ONE extra item on the Jester root wheel, shown according to what is set up in the cockpit: Maverick (TV weapon mode),
+-- Bombs (Delivery Mode other than OFF) or A/A Plus (Delivery Mode OFF). It takes one of the free root slots (the root holds 8).
+-- ROOT_MENU = false removes it. ROOT_MENU_NAMES = false gives it one fixed name ("Combat") instead of a name that follows the context.
+Config.ROOT_MENU = true
+Config.ROOT_MENU_NAMES = true
+
 -- 5. WRCS OFFSET BOMBING AND PAVE SPIKE ---------------------------------------------------------------------
 -- Magnetic variation used when the map is not recognized (degrees, east positive).
 Config.MAG_DECLINATION_FALLBACK = 0.0
