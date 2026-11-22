@@ -74,6 +74,14 @@ function Suite.Install(jester)
     -- The menu behavior registers the single A/G Plus item on every (re)spawn.
     try('menu', function() jester.behaviors[Menu.Behavior] = Menu.Behavior:new() end)
 
+    -- One context item on the Jester root wheel: Maverick, Bombs or A/A Plus (Config.ROOT_MENU = false switches it off).
+    if Config.ROOT_MENU ~= false then
+        local Root
+        if try('Root menu', function() Root = require('agplus.RootMenu') end) then
+            try('Root menu behavior', function() jester.behaviors[Root.Behavior] = Root.Behavior:new() end)
+        end
+    end
+
     try('speed call fix', function() require('agplus.SpeedFix').Install() end)
 end
 

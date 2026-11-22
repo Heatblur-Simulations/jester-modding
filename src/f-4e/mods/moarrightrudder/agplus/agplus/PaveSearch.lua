@@ -682,7 +682,12 @@ local TOP_NAME = 'Pave Spike'
 local FULL_TAIL = { 'Strike List', 'Full Target List' }   -- below A/G Plus
 local FULL_PATH = { Config.MENU_PARENT[1], Config.MENU_NAME, 'Strike List', 'Full Target List' }
 
+-- The Full Target List copy inside the root wheel menu (RootMenu.lua) sends these events instead, which RootMenu.lua forwards after noting
+-- that the click came from the root wheel, so the wheel goes back to the root menu and not to the A/G Plus page.
+local ROOT_ACTIONS = { agp_pave_refresh = 'agp_root_pave_refresh', agp_pave_purge = 'agp_root_pave_purge', agp_pave_delunit = 'agp_root_pave_delunit' }
+local ROOT_COPY = false
 local function leaf(name, action, value, reaction)
+    if ROOT_COPY and ROOT_ACTIONS[action] then action = ROOT_ACTIONS[action] end
     return Wheel.Item:new({ name = name, action = action, action_value = value, reaction = reaction or Wheel.Reaction.CLOSE_REMEMBER })
 end
 
@@ -790,7 +795,15 @@ end
 
 -- Strike List > Full Target List: Refresh Target Data, Purge Targets, and every category with its units (paged). The wheel path
 -- of this menu below A/G Plus is FULL_TAIL; the paged menus' page text is set on paths below it.
-function Search.BuildFullListItem()
+function Search.BuildFullListItem(root)
+    ROOT_COPY = (root == true)
+    local okb, itemb = pcall(Search.BuildFullListItem_)
+    ROOT_COPY = false
+    if not okb then error(itemb) end
+    return itemb
+end
+
+function Search.BuildFullListItem_()
     paged_menus = {}
     local items = {
         leaf('Refresh Target Data', 'agp_pave_refresh', nil, Wheel.Reaction.NOTHING),
@@ -1028,7 +1041,7 @@ ListenTo('agp_pave_delunit', 'AGPlusPaveDelUnit', function(task, value)
             for _, nm in ipairs(FULL_PATH) do path[#path + 1] = nm end
             path[#path + 1] = string.format('%s: %d', label, g.total)
         end
-        local okn, errn = pcall(Wheel.NavigateTo, path)
+        local okn, errn = pcall(Wheel.NavigateTo, Menu.NavFrom(path))
         if not okn then AGLog.Info('pave: delete unit: Wheel.NavigateTo failed: %s', tostring(errn)) end
     end)
     if not ok then
@@ -1138,7 +1151,7 @@ local function redraw_wheel()
     pcall(function() Menu.ClearInfoCache(); Menu.SetInfo({ TOP_NAME }, info_text()) end)
     if Config.PAVE_WHEEL_REDRAW == true then
         pcall(refresh_menu)
-        pcall(Wheel.NavigateTo, { Config.MENU_PARENT[1], Config.MENU_NAME, TOP_NAME })
+        pcall(Wheel.NavigateTo, Menu.NavPath(TOP_NAME))
     end
 end
 
@@ -1334,7 +1347,7 @@ local function check_dead(R)
     -- The wheel only redraws its pages when told to navigate (what Refresh Target Data does), so the lists are sent back to the Strike List page.
     -- Config.PAVE_DEAD_REDRAW = false skips this (the lists then show the change the next time the wheel is opened or refreshed).
     if Config.PAVE_DEAD_REDRAW ~= false then
-        pcall(Wheel.NavigateTo, { Config.MENU_PARENT[1], Config.MENU_NAME, 'Strike List' })
+        pcall(Wheel.NavigateTo, Menu.NavPath('Strike List'))
     end
 end
 
@@ -1429,7 +1442,7 @@ end
 ListenTo('agp_pave_refresh', 'AGPlusPaveRefresh', function(task)
     pcall(function()
         pcall(refresh_menu)
-        local okn, errn = pcall(Wheel.NavigateTo, FULL_PATH)
+        local okn, errn = pcall(Wheel.NavigateTo, Menu.NavFrom(FULL_PATH))
         if not okn then AGLog.Info('pave: refresh: Wheel.NavigateTo failed: %s', tostring(errn)) end
         Dbg.Say('Target Data Refreshed')
         task:Roger()
@@ -1457,7 +1470,7 @@ ListenTo('agp_pave_purge', 'AGPlusPavePurge', function(task)
         -- Heatblur's own menus do this after changing a menu: rebuild it, then Wheel.NavigateTo its path from an item that keeps the
         -- wheel open. The open wheel is redrawn at the target menu with the new contents (the menu is not redrawn by a rebuild alone).
         pcall(refresh_menu)
-        local okn, errn = pcall(Wheel.NavigateTo, FULL_PATH)
+        local okn, errn = pcall(Wheel.NavigateTo, Menu.NavFrom(FULL_PATH))
         if not okn then AGLog.Info('pave: purge: Wheel.NavigateTo failed: %s', tostring(errn)) end
         task:Roger()
     end)

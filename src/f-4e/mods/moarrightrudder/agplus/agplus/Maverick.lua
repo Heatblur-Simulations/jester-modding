@@ -2259,6 +2259,22 @@ function Maverick.BuildItem()
     return Wheel.Item:new({ name = TOP, menu = Wheel.Menu:new({ name = TOP, items = items }) })
 end
 
+-- The Maverick settings the root wheel menu shows (RootMenu.lua), in its order. Fresh items every call.
+-- The items use the event agp_root_mav, which RootMenu.lua forwards to agp_mav after noting that the click came from the root wheel.
+function Maverick.BuildQuickItems()
+    local function rleaf(name, value)
+        return Wheel.Item:new({ name = name, action = 'agp_root_mav', action_value = value, reaction = Wheel.Reaction.NOTHING })
+    end
+    return {
+        rleaf('FOV: ' .. FOVS[st.fov], 'fov'),
+        rleaf(st.after_next and 'After Launch: Next' or 'After Launch: Stop', 'after'),
+        rleaf('Lock Now', 'locknow'),
+        rleaf('Cage Seeker', 'cage'),
+        rleaf(st.hold and 'After Slew: Hold' or 'After Slew: Lock', 'hold'),
+        rleaf(st.on and 'Jester Maverick: On' or 'Jester Maverick: Off', 'toggle'),
+    }
+end
+
 local function info_text()
     -- The center readout (Oct 21 2026): the current strike target and the Mavericks on the pylons. On/Off is in the menu item.
     local T = package.loaded['agplus.Targets']
@@ -2273,7 +2289,7 @@ local function refresh()
     pcall(Menu.SetInfo, { TOP }, info_text())
     if Config.STRIKE_WHEEL_NAV ~= false then
         AGLog.Info('mav: wheel sent back to the Maverick page')
-        pcall(Wheel.NavigateTo, { Config.MENU_PARENT[1], Config.MENU_NAME, TOP })
+        pcall(Wheel.NavigateTo, Menu.NavPath(TOP, true))
     end
 end
 
